@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: micro-gateway
+    name: ddc-gateway
   cloud:
     nacos:
       discovery:
@@ -12,7 +12,7 @@ spring:
       routes: #配置路由路径
         # user模块
         - id: user-route # 路由名（不重复就行）
-          uri: lb://user # lb://模块
+          uri: lb://ddc-user # lb://模块
           predicates:
             #- Path=/oauth/token, /rsa/publicKey # 多个可匹配的用,分割
             - Path=/user/** # 匹配/user开头的请求

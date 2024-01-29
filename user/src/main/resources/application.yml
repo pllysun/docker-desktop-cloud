@@ -19,7 +19,7 @@ logging:
 #spring的配置
 spring:
   application:
-    name: user # 指明微服务应用名，很重要，以后的服务与服务之间相互调用一般都是根据这个name
+    name: ddc-user # 指明微服务应用名，很重要，以后的服务与服务之间相互调用一般都是根据这个name
   #数据源的配置
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource #数据源为druid
