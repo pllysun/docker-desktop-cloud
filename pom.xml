@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--统一包目录，可以com.xxx，子模块中代码都要在其下面-->
+    <groupId>com.cloud</groupId>
+    <!--工件名，统一应该就行-->
+    <artifactId>springcloud</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <!--项目名称-->
+    <name>springcloud</name>
+    <!--项目描述，没啥用-->
+    <description>springcloud</description>
+
+    <!--子模块，在创建子模块时会自动生成，但删除模块时不会自动删除-->
+    <modules>
+        <module>api</module>
+        <module>user</module>
+        <module>gateway</module>
+    </modules>
+
+
+    <!--共用引入的具体版本可以在这里自定义后直接以${...}样式使用-->
+    <properties>
+        <java.version>19</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!--<spring-boot.version>3.1.0</spring-boot.version>-->
+        <spring-boot.version>2.7.13</spring-boot.version>
+        <!--<spring-cloud.version>2022.0.0</spring-cloud.version>-->
+        <!--<spring-cloud.version>2022.0.5</spring-cloud.version>-->
+        <spring-cloud.version>2021.0.3</spring-cloud.version>
+        <!--<spring-cloud-alibaba.version>2022.0.0.0-RC2</spring-cloud-alibaba.version>-->
+        <!--<spring-cloud-alibaba.version>2022.0.0.0-RC2</spring-cloud-alibaba.version>-->
+        <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
+        <druid.version>1.2.18</druid.version>
+        <mysql.version>8.0.23</mysql.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+    </properties>
+
+    <!-- 锁定版本解决版本冲突问题，所有相关依赖全部限定为当前版本号，即子模块不需要写version标签，groupId也可以忽略不写 -->
+    <dependencyManagement>
+        <dependencies>
+            <!--spring boot 依赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--spring cloud 依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--spring cloud alibaba-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- druild(德鲁伊) 数据源依赖 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- mysql 驱动依赖 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <!--mybatis-plus-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!--通用依赖-->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <!-- 热部署依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <!-- lombok依赖 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- springboot整合测试依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--jackson json操作库-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
