@@ -25,9 +25,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource #数据源为druid
     driver-class-name: com.mysql.cj.jdbc.Driver #数据库驱动
     # todo 子模块user这边有数据库配置
-    url: jdbc:mysql://localhost:3306/knowledge_communities?serverTimezone=UTC&serverTimezone=GMT%2B8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+    url: jdbc:mysql://gz-cynosdbmysql-grp-eiglslgf.sql.tencentcdb.com:27118/ddc?serverTimezone=UTC&serverTimezone=GMT%2B8&serverTimezone=Asia/Shanghai
+    username: ddc
+    password: 123456Ff
   cloud:
     nacos:
       discovery:
