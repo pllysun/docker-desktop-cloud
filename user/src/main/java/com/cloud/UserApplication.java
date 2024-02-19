@@ -7,7 +7,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * GateWayApplication
- *
  * @author zhou kai
  * 2023-12-02
  **/
@@ -18,5 +17,4 @@ public class UserApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
     }
-
 }

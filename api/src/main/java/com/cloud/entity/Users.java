@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -12,14 +13,14 @@ import lombok.Data;
  * 用户表
  * @TableName users
  */
-@TableName(value ="users")
+@TableName(value ="user_table")
 @Data
 public class Users implements Serializable {
     /**
      * 编号
      */
     @TableId
-    private Long id;
+    private Integer userId;
 
     /**
      * 账号
@@ -29,37 +30,57 @@ public class Users implements Serializable {
     /**
      * 密码
      */
-    private String pwd;
-
-    /**
-     * 昵称
-     */
-    private String nick;
+    private String password;
 
     /**
      * 头像(地址)
      */
-    private String icon;
+    private String userHead;
 
     /**
-     * 个人简介
+     * 邮箱
      */
-    private String biography;
+    private String email;
 
     /**
-     * 创建时间
+     * 电话
      */
-    private Date createTime;
+    private String phone;
+
+    /**
+     * 性别
+     */
+    private String sex;
+
+    /**
+     * 年龄
+     */
+    private String age;
+
+    /**
+     *  职业id
+     */
+    private Integer occupationId;
 
     /**
      * 系统角色(与用户在社群中的角色区分) - 0:系统用户 -1:系统管理员
      */
-    private Integer sysRole;
+    private Integer roleId;
 
     /**
-     * 删除标记
+     *  桌面数量
      */
-    private Integer deleted;
+    private Integer NumberOfDesktops;
+
+    /**
+     *  创建时间
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -1,0 +1,47 @@
+server:
+  port: 8086
+
+#mybatis配置
+mybatis-plus:
+  # mybatis主配置文件
+  # config-location: classpath:mybatis/mybatis-config.xml
+  # 映射文件所在路径
+  #mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath*:mapper/*.xml # 如果有多个模块都有mapper/*.xml，用classpath*才能解析
+  # pojo类所在包路径
+  # todo 路径可能需要修改
+  type-aliases-package: com.cloud.entity
+
+logging:
+  level:
+    com.kcs.mapper: debug  #解决mybatis sql在info级别下不打印问题
+
+#spring的配置
+spring:
+  application:
+    name: ddc-image # 指明微服务应用名，很重要，以后的服务与服务之间相互调用一般都是根据这个name
+  #数据源的配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource #数据源为druid
+    driver-class-name: com.mysql.cj.jdbc.Driver #数据库驱动
+    # todo 子模块user这边有数据库配置
+    url: jdbc:mysql://gz-cynosdbmysql-grp-eiglslgf.sql.tencentcdb.com:27118/ddc?serverTimezone=UTC&serverTimezone=GMT%2B8&serverTimezone=Asia/Shanghai
+    username: ddc
+    password: 123456Ff
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 119.29.159.39:8848 # todo nacos地址
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

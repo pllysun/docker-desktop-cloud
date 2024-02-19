@@ -20,6 +20,7 @@
         <module>user</module>
         <module>gateway</module>
         <module>container</module>
+        <module>image</module>
     </modules>
 
 

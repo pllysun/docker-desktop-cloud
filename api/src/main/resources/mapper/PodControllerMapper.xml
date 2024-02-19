@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.mapper.PodControllerMapper">
+    <insert id="insert" parameterType="com.cloud.entity.PodController">
+        INSERT INTO pod_controller_table
+            (pod_controller_name, container_state,container_name,image_id,
+             user_id,network_id,ip_address,pod_controller_cpu,pod_controller_memory,pod_controller_systemDisk,pod_controller_dataDisk,pod_controller_version)
+        VALUES (#{podControllerName},#{containerState},#{containerName},#{imageId},#{userId},#{networkId},#{ipAddress},#{podControllerCpu},#{podControllerMemory},#{podControllerSystemDisk},#{podControllerDataDisk},#{podControllerVersion})
+    </insert>
+</mapper>

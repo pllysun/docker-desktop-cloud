@@ -4,21 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cloud.mapper.UsersMapper">
 
-    <resultMap id="BaseResultMap" type="com.cloud.entity.Users">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="username" column="username" jdbcType="VARCHAR"/>
-            <result property="pwd" column="pwd" jdbcType="VARCHAR"/>
-            <result property="nick" column="nick" jdbcType="VARCHAR"/>
-            <result property="icon" column="icon" jdbcType="VARCHAR"/>
-            <result property="biography" column="biography" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="sysRole" column="sys_role" jdbcType="INTEGER"/>
-            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
-    </resultMap>
+<!--    <resultMap id="BaseResultMap" type="com.cloud.entity.Users">-->
+<!--            <id property="id" column="id" jdbcType="BIGINT"/>-->
+<!--            <result property="username" column="username" jdbcType="VARCHAR"/>-->
+<!--            <result property="pwd" column="pwd" jdbcType="VARCHAR"/>-->
+<!--            <result property="nick" column="nick" jdbcType="VARCHAR"/>-->
+<!--            <result property="icon" column="icon" jdbcType="VARCHAR"/>-->
+<!--            <result property="biography" column="biography" jdbcType="VARCHAR"/>-->
+<!--            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>-->
+<!--            <result property="sysRole" column="sys_role" jdbcType="INTEGER"/>-->
+<!--            <result property="deleted" column="deleted" jdbcType="TINYINT"/>-->
+<!--    </resultMap>-->
 
     <sql id="Base_Column_List">
         id,username,pwd,
         nick,icon,biography,
         create_time,sys_role,deleted
     </sql>
+
+    <select id="getRecommendedId"  resultType="Integer">
+        select occupation_table.occupation_id from user_table, occupation_table,recommended_table,recommended_occupation
+                where user_table.occupation_id = occupation_table.occupation_id and user_table.user_id=#{userId}
+                  and recommended_table.recommended_id = recommended_occupation.recommended_id
+                  and recommended_occupation.occupation_id = occupation_table.occupation_id
+    </select>
+
 </mapper>

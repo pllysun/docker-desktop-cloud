@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.mapper.ContainerMapper">
+
+    <select id="List" resultType="com.cloud.DTO.ContainerDto">
+        select * from pod_controller_table,network_table
+        where pod_controller_table.user_id=#{userId}
+          and pod_controller_table.network_id=network_table.network_id
+    </select>
+
+    <update id="closeContainerState">
+        update pod_controller_table
+        set container_state='Close' where pod_controller_id=#{podControllerId}
+    </update>
+
+    <update id="openContainerState">
+        update pod_controller_table
+        set container_state='Open',update_time=#{updateTime} where pod_controller_id=#{podControllerId}
+    </update>
+
+    <update id="updateContainerName">
+        update pod_controller_table
+        set container_name=#{containerName} where pod_controller_id=#{podControllerId}
+    </update>
+
+</mapper>
