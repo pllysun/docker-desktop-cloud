@@ -27,18 +27,6 @@ public class UserController {
     @Autowired
     private UsersService usersService;
 
-    @GetMapping("/hello")
-    public R<Object> hello() {
-        return R.success("你好");
-    }
-
-    // 写一个简单的全查询
-    @GetMapping("/get")
-    public R<Object> get() {
-        List<Users> users = usersService.getBaseMapper().selectList(null); //查询所有
-        return R.success(users);
-    }
-
     /**
      * 登录接口
      * @param user 用户名和密码
