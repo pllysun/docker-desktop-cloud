@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * UserController
+ * 用户模块
  *
- * @author zhou kai
+ * @author 阿东
  * 2024-01-28
  **/
 @RestController
