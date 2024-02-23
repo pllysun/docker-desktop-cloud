@@ -84,4 +84,9 @@ public class Users implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Users(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
