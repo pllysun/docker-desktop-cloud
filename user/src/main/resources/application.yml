@@ -38,6 +38,15 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+  redis:
+    database: 0
+    host: 1.15.72.167
+    port: 6379
+    password: F1125@ye*@Ff
+    lettuce.pool.max-active: 8
+    lettuce.pool.max-wait: -1
+    lettuce.pool.max-idle: 8
+    lettuce.pool.min-idle: 0
 
 management:
   endpoints:

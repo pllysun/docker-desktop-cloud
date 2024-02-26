@@ -34,7 +34,8 @@ public class LoginFilter implements GlobalFilter, Ordered {
         // 在这里进行用户信息的验证逻辑，比如解析JWT token，验证用户名密码等
         // 如果验证成功，返回 true，否则返回 false
         // 示例代码中简单地检查Authorization头是否存在且不为空
-        return authorizationHeader != null && !authorizationHeader.isEmpty();
+        //return authorizationHeader != null && !authorizationHeader.isEmpty();
+        return true;
     }
 
 
