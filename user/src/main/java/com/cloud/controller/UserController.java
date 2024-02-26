@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cloud.DTO.UserDTO;
 import com.cloud.entity.Users;
 import com.cloud.service.UsersService;
+import com.cloud.utils.JwtUtil;
 import com.cloud.utils.R;
+import com.cloud.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -27,6 +30,9 @@ public class UserController {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private RedisCache redisCache;
+
     /**
      * 登录接口
      * @param user 用户名和密码
@@ -39,6 +45,8 @@ public class UserController {
         Users users = usersService.getOne(lambda);
         if(users!=null){
             if(users.getPassword().equals(user.getPassword())){
+                String jwt = JwtUtil.createJWT(user.getUsername());
+                redisCache.setCacheObject("User:"+user.getUsername(),jwt);
                 return R.success("登录成功");
             }
             return R.fail("密码错误");
@@ -63,6 +71,17 @@ public class UserController {
         usersService.save(userEntity);
         return R.success("注册成功，请登录");
     }
+
+
+    @GetMapping("/user")
+    public R<Object> getUserInfo(HttpServletRequest request){
+        // 获取请求头
+        String jwtToken = request.getHeader("Authorization");
+        String username = JwtUtil.parseJWT(jwtToken).getSubject();
+        List<Users> list = usersService.list();
+        return  R.success(username);
+    }
+
 
 
 }
