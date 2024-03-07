@@ -5,11 +5,11 @@ FROM openjdk:21
 WORKDIR /app
 
 # 将编译并打包后的应用程序 JAR 文件拷贝到容器中
-COPY target/d-judge-0.0.1-SNAPSHOT.jar /app/d-judge-0.0.1-SNAPSHOT.jar
+COPY target/user-0.0.1-SNAPSHOT.jar /app/user-0.0.1-SNAPSHOT.jar
 
 
 # 暴露应用程序使用的端口
 EXPOSE 5521
 
 # 启动应用程序
-CMD ["java", "-jar", "d-judge-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "user-0.0.1-SNAPSHOT.jar"]
