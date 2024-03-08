@@ -1,16 +1,19 @@
 package com.cloud.utils;
 
+import com.cloud.DTO.ContainerDto;
 import com.cloud.DTO.DeskTopDto;
 import com.cloud.DTO.ImageDto;
+import com.cloud.DTO.UserImageDto;
 import com.cloud.entity.ConfigEntity;
+import com.cloud.entity.Image;
 import com.cloud.entity.PodController;
+import com.cloud.entity.Recommend;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class TypeUtil {
 
-    private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private static final int ID_LENGTH = 10;
     /**
      * 初始化pod控制器
      * @param userId
@@ -22,7 +25,7 @@ public class TypeUtil {
         podController.setImageId(String.valueOf(deskTopDto.getImageDto().getImageId()));
         podController.setContainerName(deskTopDto.getContainerName());
         podController.setUserId(userId);
-        podController.setNetworkId("1");
+        podController.setNetworkId(deskTopDto.getNetworkId());//todo 这里的网络还没改
         podController.setIpAddress(ip);
         podController.setPodControllerName(deskTopDto.getPodControllerName());
         podController.setContainerState(ConfigEntity.ContainerStatus);
@@ -33,4 +36,74 @@ public class TypeUtil {
         podController.setPodControllerVersion(ConfigEntity.InitialRelease);
         return podController;
     }
+
+    /**
+     *  生成唯一标识码，数字用X去表示
+     */
+    public static String generateLetterOnlyUUID() {
+        String uuid = UUID.randomUUID().toString();
+        uuid = uuid.replaceAll("-", "");
+        return uuid.replaceAll("[0-9]", "X");
+    }
+
+    /**
+     * 生成镜像类
+     * @param imageDto
+     * @param userId
+     * @param imageName
+     * @param imageId
+     * @return
+     */
+    public static Image CreateImage(ImageDto imageDto, Integer userId,String imageName,String imageId) {
+        Image image=new Image();
+        image.setImageId(imageId);
+        image.setImageName(imageName);
+        image.setImageSystem(imageDto.getImageSystem());
+        image.setSource(ConfigEntity.Image_Source);
+        image.setImageRemark(imageDto.getImageRemark());
+        image.setImageIntroduce(imageDto.getImageIntroduce());
+        image.setUserId(userId);
+        return image;
+    }
+
+    /**
+     * 检查存储
+     * @param GB
+     * @param PodControllerDataDisk
+     * @param PodControllerSystemDisk
+     * @return
+     */
+    public static boolean CheckConfig(Integer GB,Integer PodControllerDataDisk,Integer PodControllerSystemDisk){
+        if(PodControllerDataDisk<=0||PodControllerSystemDisk<=0
+                ||(PodControllerSystemDisk+PodControllerDataDisk>ConfigEntity.Disk_Top)
+                ||(PodControllerDataDisk+PodControllerSystemDisk>GB))return false;
+        return true;
+    }
+
+    /**
+     * 检查资源配置
+     */
+    public static boolean CheckResourceConfig(Integer CPU,Integer Memory){
+        if(CPU<=0||Memory<=0||CPU>ConfigEntity.CPU_Top||Memory>ConfigEntity.Memory_Top)return false;
+        return true;
+    }
+
+    /**
+     * 变换为镜像类型
+     * @param userImageDto
+     * @return
+     */
+    public static Image CreateImage(UserImageDto userImageDto){
+        Image image=new Image();
+        image.setUserId(userImageDto.getContainerDto().getUserId());
+        image.setImageName(userImageDto.getContainerDto().getPodControllerName());
+        image.setSource(ConfigEntity.User_Source);
+        image.setImageRemark(userImageDto.getImageRemark());
+        image.setImageIntroduce(userImageDto.getImageIntroduce());
+        image.setImageSystem(userImageDto.getImageSystem());
+        return image;
+    }
+
+
+
 }

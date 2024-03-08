@@ -17,4 +17,12 @@ public interface ContainerMapper extends BaseMapper<PodController> {
     void openContainerState(ContainerDto containerDto);
 
     void updateContainerName(@Param("podControllerId") Integer podControllerId,@Param("containerName") String containerName);
+
+    void updateSystemDisk(@Param("podControllerId")Integer podControllerId,@Param("podControllerSystemDisk") Integer podControllerSystemDisk);
+
+    String selectContainerNameById(Integer podControllerId);
+
+    String selectPodControllerNameById(Integer podControllerId);
+
+    List<ContainerDto> getTimeOutContainers(Integer deleteTime);
 }

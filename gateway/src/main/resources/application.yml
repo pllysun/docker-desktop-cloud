@@ -32,6 +32,27 @@ spring:
             - Path=/image/** # 匹配以”/users“开头的路径
           filters:
             - StripPrefix=1 # 去除请求路径中的"/users"前缀
+        # 添加其他模块
+        - id: log-route
+          uri: lb://ddc-log
+          predicates:
+            - Path=/log/** # 匹配以”/users“开头的路径
+          filters:
+            - StripPrefix=1 # 去除请求路径中的"/users"前缀
+        # 添加其他模块
+        - id: network-route
+          uri: lb://ddc-network
+          predicates:
+            - Path=/network/** # 匹配以”/users“开头的路径
+          filters:
+            - StripPrefix=1 # 去除请求路径中的"/users"前缀
+        # 添加其他模块
+        - id: control-route
+          uri: lb://ddc-control
+          predicates:
+            - Path=/control/** # 匹配以”/users“开头的路径
+          filters:
+            - StripPrefix=1 # 去除请求路径中的"/users"前缀
       discovery:
         locator:
           enabled: true #开启从注册中心动态创建路由的功能

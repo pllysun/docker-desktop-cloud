@@ -12,14 +12,24 @@ import java.util.List;
 public class ImageDto {
 
     /**
-     * 镜像ID
+     * 镜像ID(不显示)
      */
-    private Integer imageId;
+    private String imageId;
 
     /**
-     *  镜像名称
+     *  镜像名称（不显示）
      */
     private String imageName;
+
+    /**
+     * 用户id
+     */
+    private Integer userId;
+
+    /**
+     *  镜像描述
+     */
+    private String imageRemark;
 
     /**
      *  镜像系统
@@ -30,6 +40,11 @@ public class ImageDto {
      *  镜像标签
      */
     private List<String> labelName;
+
+    /**
+     * 镜像配置id
+     */
+    private Integer recommendedId;
 
     /**
      *    推荐CPU

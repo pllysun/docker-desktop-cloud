@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PodControllerMapper {
 
 
-    public void insert(PodController podController);
+    void insert(PodController podController);
 }

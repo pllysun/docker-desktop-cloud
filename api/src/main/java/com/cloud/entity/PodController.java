@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @TableName("pod_controller_table")
 public class PodController {
 
@@ -18,7 +16,7 @@ public class PodController {
      * pod控制器id
      */
     @TableId
-    private String pod_controller_id;
+    private Long podControllerId;
 
     /**
      * 容器名称

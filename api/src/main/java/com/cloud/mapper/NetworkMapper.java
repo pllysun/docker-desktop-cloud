@@ -1,9 +1,11 @@
 package com.cloud.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cloud.entity.Image_Recommended;
+import com.cloud.entity.Network;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface Image_RecommendedMapper extends BaseMapper<Image_Recommended> {
+public interface NetworkMapper extends BaseMapper<Network> {
+
+    void addDeskTop(String networkId);
 }

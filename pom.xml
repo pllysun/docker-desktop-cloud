@@ -21,12 +21,15 @@
         <module>gateway</module>
         <module>container</module>
         <module>image</module>
+        <module>log</module>
+        <module>network</module>
+        <module>control</module>
     </modules>
 
 
     <!--共用引入的具体版本可以在这里自定义后直接以${...}样式使用-->
     <properties>
-        <java.version>19</java.version>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!--<spring-boot.version>3.1.0</spring-boot.version>-->

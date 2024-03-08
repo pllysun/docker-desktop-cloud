@@ -16,4 +16,10 @@ public interface ImageMapper extends BaseMapper<Image> {
     List<ImageDto> getAllUser(@Param("imageName") String imageName,@Param("imageSystem") String imageSystem,@Param("recommendedCpu") Integer recommendedCpu,@Param("recommendedMemory") Integer recommendedMemory,@Param("recommendedSystemDisk") Integer recommendedSystemDisk,@Param("recommendedDataDisk") Integer recommendedDataDisk,@Param("labelName")List<String> labelName,@Param("count") Integer count);
 
     List<ImageDto> getRecommended(Integer recommendedId);
+
+    String selectImageName(String imageSystem);
+
+    List<String> getSystem();
+
+    List<ImageDto> getIndividualImage(@Param("userId") Integer userId,@Param("imageName") String imageRemark,@Param("imageSystem") String imageSystem,@Param("recommendedCpu") Integer recommendedCpu,@Param("recommendedMemory") Integer recommendedMemory,@Param("recommendedSystemDisk") Integer recommendedSystemDisk,@Param("recommendedDataDisk") Integer recommendedDataDisk,@Param("labelName")List<String> labelName,@Param("count") Integer count);
 }

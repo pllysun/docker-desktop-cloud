@@ -6,13 +6,16 @@
 
 <!--    官方所有镜像-->
     <select id="getAllOfficial" resultType="com.cloud.DTO.ImageDto">
-        select * from image_table,recommended_table,image_recommended
+        select  distinct image_table.image_id,image_name,image_system,image_introduce
+                       ,image_label.recommended_id,recommended_cpu,recommended_memory,
+                        recommended_system_disk,recommended_data_disk,image_remark,image_table.user_id
+        from image_table,recommended_table,image_label
         <where>
-            image_table.image_id = image_recommended.image_id
-            and image_recommended.recommended_id = recommended_table.recommended_id
+            image_table.image_id = image_label.image_id
+            and recommended_table.recommended_id = image_label.recommended_id
             and image_table.source=0
             <if test="imageName != null and imageName !='' ">
-                and image_table.image_name like concat('%',#{imageName},'%')
+                and image_table.image_remark like concat('%',#{imageName},'%')
             </if>
             <if test="imageSystem != null">
                 and image_table.image_system= #{imageSystem}
@@ -24,40 +27,50 @@
                 and recommended_table.recommended_memory = #{recommendedMemory}
             </if>
             <if test="recommendedSystemDisk != null">
-                and recommended_table.recommended_systemDisk = #{recommendedSystemDisk}
+                and recommended_table.recommended_system_disk = #{recommendedSystemDisk}
             </if>
             <if test="recommendedDataDisk!= null">
-                and recommended_table.recommended_dataDisk = #{recommendedDataDisk}
+                and recommended_table.recommended_data_disk = #{recommendedDataDisk}
             </if>
             <if test="labelName != null">
-                and image_table.image_id in(select image_label.image_id from image_label,label_table
+                and (image_table.image_id,image_label.recommended_id) in(select image_label.image_id,image_label.recommended_id
+                from image_label,label_table
                 where image_label.label_id=label_table.label_id
                 and label_table.label_name in
                  <foreach collection="labelName" item="label" open="(" separator="," close=")">
                  #{label}
                  </foreach>
-                 group by image_id
-                having count(image_id)=#{count})
+                 group by image_id,recommended_id
+                having count(image_id)=#{count}
+                )
             </if>
         </where>
     </select>
-<!--    推荐镜像(没写完)-->
+
+
+<!--    推荐镜像-->
     <select id="getRecommended" resultType="com.cloud.DTO.ImageDto">
-        select * from image_table,recommended_table,image_recommended where
-            image_table.image_id = image_recommended.image_id
-            and image_recommended.recommended_id = recommended_table.recommended_id
+        select distinct image_table.image_id,image_remark,image_name,image_system,image_introduce
+                      ,image_label.recommended_id,recommended_cpu,recommended_memory
+                      ,recommended_system_disk,recommended_data_disk,image_table.user_id
+        from image_table,recommended_table,image_label where
+            image_table.image_id = image_label.image_id
+            and image_label.recommended_id = recommended_table.recommended_id
             and image_table.source=0
             and recommended_table.recommended_id = #{recommendedId}
     </select>
 <!--    用户镜像-->
     <select id="getAllUser" resultType="com.cloud.DTO.ImageDto">
-        select * from image_table,recommended_table,image_recommended
+        select  distinct image_table.image_id,image_name,image_system,image_introduce
+        ,image_label.recommended_id,recommended_cpu,recommended_memory,
+        recommended_system_disk,recommended_data_disk,image_remark,image_table.user_id
+        from image_table,recommended_table,image_label
         <where>
-            image_table.image_id = image_recommended.image_id
-            and image_recommended.recommended_id = recommended_table.recommended_id
+            image_table.image_id = image_label.image_id
+            and recommended_table.recommended_id = image_label.recommended_id
             and image_table.source=1
             <if test="imageName != null and imageName !='' ">
-                and image_table.image_name like concat('%',#{imageName},'%')
+                and image_table.image_remark like concat('%',#{imageName},'%')
             </if>
             <if test="imageSystem != null">
                 and image_table.image_system= #{imageSystem}
@@ -69,20 +82,74 @@
                 and recommended_table.recommended_memory = #{recommendedMemory}
             </if>
             <if test="recommendedSystemDisk != null">
-                and recommended_table.recommended_systemDisk = #{recommendedSystemDisk}
+                and recommended_table.recommended_system_disk = #{recommendedSystemDisk}
             </if>
             <if test="recommendedDataDisk!= null">
-                and recommended_table.recommended_dataDisk = #{recommendedDataDisk}
+                and recommended_table.recommended_data_disk = #{recommendedDataDisk}
             </if>
             <if test="labelName != null">
-                and image_table.image_id in(select image_label.image_id from image_label,label_table
+                and (image_table.image_id,image_label.recommended_id) in(select image_label.image_id,image_label.recommended_id
+                from image_label,label_table
                 where image_label.label_id=label_table.label_id
                 and label_table.label_name in
                 <foreach collection="labelName" item="label" open="(" separator="," close=")">
                     #{label}
                 </foreach>
-                group by image_id
-                having count(image_id)=#{count})
+                group by image_id,recommended_id
+                having count(image_id)=#{count}
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectImageName" resultType="String">
+        select image_name from  image_table where image_system=#{imageSystem} limit 1
+    </select>
+
+<!--    查询系统-->
+    <select id="getSystem" resultType="String">
+        select distinct image_system from  image_table
+    </select>
+
+<!--    查询个人镜像-->
+    <select id="getIndividualImage" resultType="com.cloud.DTO.ImageDto">
+        select  distinct image_table.image_id,image_name,image_system,image_introduce
+        ,image_label.recommended_id,recommended_cpu,recommended_memory,
+        recommended_system_disk,recommended_data_disk,image_remark,image_table.user_id
+        from image_table,recommended_table,image_label
+        <where>
+            image_table.image_id = image_label.image_id
+            and recommended_table.recommended_id = image_label.recommended_id
+            and image_table.user_id = #{userId}
+            <if test="imageName != null and imageName !='' ">
+                and image_table.image_remark like concat('%',#{imageName},'%')
+            </if>
+            <if test="imageSystem != null">
+                and image_table.image_system= #{imageSystem}
+            </if>
+            <if test="recommendedCpu != null">
+                and recommended_table.recommended_cpu= #{recommendedCpu}
+            </if>
+            <if test="recommendedMemory != null">
+                and recommended_table.recommended_memory = #{recommendedMemory}
+            </if>
+            <if test="recommendedSystemDisk != null">
+                and recommended_table.recommended_system_disk = #{recommendedSystemDisk}
+            </if>
+            <if test="recommendedDataDisk!= null">
+                and recommended_table.recommended_data_disk = #{recommendedDataDisk}
+            </if>
+            <if test="labelName != null">
+                and (image_table.image_id,image_label.recommended_id) in(select image_label.image_id,image_label.recommended_id
+                from image_label,label_table
+                where image_label.label_id=label_table.label_id
+                and label_table.label_name in
+                <foreach collection="labelName" item="label" open="(" separator="," close=")">
+                    #{label}
+                </foreach>
+                group by image_id,recommended_id
+                having count(image_id)=#{count}
+                )
             </if>
         </where>
     </select>

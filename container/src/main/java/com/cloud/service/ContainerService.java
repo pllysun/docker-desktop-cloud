@@ -2,6 +2,8 @@ package com.cloud.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cloud.DTO.ContainerDto;
+import com.cloud.DTO.PageBean;
+import com.cloud.DTO.UserImageDto;
 import com.cloud.entity.PodController;
 
 import java.util.List;
@@ -15,19 +17,25 @@ public interface ContainerService extends IService<PodController> {
      */
     List<ContainerDto> List(Integer userId);
 
-    /**
-     * 容器状态关机
-     * @param containerDto
-     */
-    void closeContainerState(ContainerDto containerDto);
 
-    /**
-     *  容器状态开机
-     * @param containerDto
-     */
-    void openContainerState(ContainerDto containerDto);
+    void closeContainerState(Integer userId,ContainerDto containerDto);
 
-    void deleteByPodControllerName(ContainerDto containerDto);
+    void openContainerState(Integer userId,ContainerDto containerDto);
 
-    void updateContainerName(Integer podControllerId, String containerName);
+    void deleteByPodControllerName(Integer userId,ContainerDto containerDto);
+
+    void updateContainerName(Integer userId,Integer podControllerId, String containerName);
+
+    void updateSystemDisk(Integer userId,Integer podControllerId, Integer podControllerSystemDisk);
+
+    void reinstall(Integer userId, ContainerDto containerDto);
+
+
+    PageBean adminList(Integer pageNum, Integer pageSize);
+
+    List<ContainerDto> getTimeOutContainers();
+
+    void deleteBySystem(ContainerDto container);
+
+    void upload(UserImageDto userImageDto);
 }

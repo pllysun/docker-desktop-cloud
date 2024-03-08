@@ -7,5 +7,11 @@
         select label_name from label_table ,image_label
         where label_table.label_id = image_label.label_id
         and image_label.image_id = #{imageId}
+        and image_label.recommended_id=#{recommendedId}
     </select>
+
+    <select id="getLabelId" resultType="Integer">
+    select label_id from label_table where label_name = #{labelName}
+    </select>
+
 </mapper>

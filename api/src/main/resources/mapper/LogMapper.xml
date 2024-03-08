@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.mapper.LogMapper">
+
+    <select id="listAll" resultType="com.cloud.DTO.LogDto">
+        select * from log_table,log_type_table
+        <where>
+            log_table.log_type_id=log_type_table.log_type_id
+        <if test="userId!=null">
+            and log_table.user_id=#{userId}
+        </if>
+
+        <if test="logTypeName!=null and  logTypeName!=''">
+            and log_type_table.log_type_name =#{logTypeName}
+        </if>
+        </where>
+    </select>
+
+
+    <insert id="insertLog">
+        insert into log_table(log_type_id,user_id,log_time,log_content)
+        values(#{logTypeId},#{userId},#{logTime},#{logContent})
+    </insert>
+
+</mapper>

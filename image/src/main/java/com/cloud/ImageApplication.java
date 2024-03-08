@@ -1,6 +1,7 @@
 package com.cloud;
 
 import com.cloud.config.K8sConfig;
+import com.cloud.config.LinuxConfig;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.util.Config;
@@ -19,7 +20,7 @@ import java.io.InputStream;
 @MapperScan("com.cloud.mapper") // todo mapper扫描可以写着-->mybatis plus
 public class ImageApplication {
     public static void main(String[] args) throws IOException {
-        K8sConfig.k8sclient();
+        //K8sConfig.k8sclient();
         SpringApplication.run(ImageApplication.class, args);
     }
 }

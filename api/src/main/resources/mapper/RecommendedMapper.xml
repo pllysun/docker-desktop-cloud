@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.mapper.RecommendedMapper">
+    <select id="getRecommendedId" resultType="java.lang.Integer">
+        select recommended_id from recommended_table
+        where recommended_cpu= #{recommendedCpu}
+        and recommended_memory = #{recommendedMemory}
+        and recommended_system_disk = #{recommendedSystemDisk}
+        and recommended_data_disk = #{recommendedDataDisk}
+    </select>
+
+    <insert id="addRecommended">
+        insert into recommended_table(recommended_cpu,recommended_memory,recommended_system_disk,recommended_data_disk)
+        values(#{recommendedCpu},#{recommendedMemory},#{recommendedSystemDisk},#{recommendedDataDisk})
+    </insert>
+</mapper>

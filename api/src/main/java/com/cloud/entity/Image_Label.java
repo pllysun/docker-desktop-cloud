@@ -1,5 +1,6 @@
 package com.cloud.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,10 +14,16 @@ public class Image_Label {
     /**
      * 镜像id
      */
-    private Integer imageId;
+    private String imageId;
 
     /**
      *  标签id
      */
     private Integer labelId;
+
+    /**
+     * 配置id
+     */
+    private Integer recommendedId;
+
 }

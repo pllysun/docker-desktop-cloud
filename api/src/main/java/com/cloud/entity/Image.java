@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.InaccessibleObjectException;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,4 +38,14 @@ public class Image {
      * 镜像介绍
      */
     private String imageIntroduce;
+
+    /**
+     * 镜像备注
+     */
+    private String imageRemark;
+
+    /**
+     * 上传用户
+     */
+    private Integer userId;
 }

@@ -10,33 +10,37 @@ import java.time.LocalDateTime;
  * 桌面容器--->容器DTO
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ContainerDto {
     /**
      * 桌面id
      */
-    private String podControllerId;
+    private Integer podControllerId;
+
     /**
      * 桌面名称
      */
     private String podControllerName;
-    /**
-     * 网络id
-     */
-    private String networkId;
+
     /**
      * 桌面所属网络
      */
     private String networkName;
+
+    /**
+     * 使用用户id
+     */
+    private Integer userId;
+
     /**
      * 桌面ip地址
      */
     private String ipAddress;
+
     /**
      * 桌面状态
      */
     private String containerState;
+
     /**
      * 桌面版本
      */
