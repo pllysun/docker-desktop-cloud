@@ -64,5 +64,37 @@
         </dependency>
     </dependencies>
 
+    <!--引入部署插件-->
+    <build>
+        <!--jar包名字，如果不指定，默认为：模块名+-1.0-SNAPSHOT.jar-->
+        <finalName>ddc-image</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 指定该Main Class为全局的唯一入口 这里是启动类的地址 -->
+                    <mainClass>com.cloud.ImageApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!--把依赖的包都打包到生成的Jar包中-->
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>

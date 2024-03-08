@@ -5,11 +5,11 @@ FROM openjdk:21
 WORKDIR /app
 
 # 将编译并打包后的应用程序 JAR 文件拷贝到容器中
-COPY target/ddc-user.jar /app/ddc-user.jar
+COPY target/ddc-container.jar /app/ddc-container.jar
 
 
 # 暴露应用程序使用的端口
-EXPOSE 8086
+EXPOSE 8085
 
 # 启动应用程序
-CMD ["java", "-jar", "ddc-user.jar"]
+CMD ["java", "-jar", "ddc-container.jar"]
