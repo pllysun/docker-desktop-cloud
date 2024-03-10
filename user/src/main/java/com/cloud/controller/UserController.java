@@ -2,6 +2,9 @@ package com.cloud.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloud.DTO.UserDTO;
 import com.cloud.entity.Users;
 import com.cloud.service.UsersService;
@@ -88,34 +91,19 @@ public class UserController {
      * @return 用户列表
      */
     @GetMapping("/userList")
-    public R<Object> getUserList(){
-        List<Users> list = usersService.list();
-        return R.success(list);
+    public R<Object> getUserList(@RequestParam("page") int page, @RequestParam("limit") int limit){
+        IPage<Users> ipage =  new Page<>(page,limit);
+        List<Users> records = usersService.page(ipage).getRecords();
+        return R.success(records);
     }
 
 
     /**
-     * 删除用户
-     * @param user 用户名
-     * @return 删除结果
-     */
-    @PostMapping("/deleteUser")
-    public R<Object> deleteUser(@RequestBody UserDTO user){
-        LambdaQueryWrapper<Users> lambda = new QueryWrapper<Users>().lambda();
-        lambda.eq(Users::getUsername, user.getUsername());
-        boolean remove = usersService.remove(lambda);
-        if(remove){
-            return R.success("删除成功");
-        }
-        return R.fail("删除失败");
-    }
-
-    /**
-     * 修改用户信息
-     * @param user 用户名和密码
+     * 修改用户密码
+     * @param user 用户名和新密码
      * @return 修改结果
      */
-    @PostMapping("/updateUser")
+    @PostMapping("/updatePassword")
     public R<Object> updateUser(@RequestBody UserDTO user){
         LambdaQueryWrapper<Users> lambda = new QueryWrapper<Users>().lambda();
         lambda.eq(Users::getUsername, user.getUsername());
@@ -151,6 +139,24 @@ public class UserController {
         int count = (int) usersService.count();
         return R.success(count);
     }
+
+    /**
+     * 修改（添加）用户信息
+     * @param user
+     * @return
+     */
+    @PostMapping("/userInfo")
+    public R<Object> getUserInfo(@RequestBody UserDTO user){
+        LambdaQueryWrapper<Users> lambda = new QueryWrapper<Users>().lambda();
+        lambda.eq(Users::getUsername, user.getUsername());
+        Users users = usersService.getOne(lambda);
+        if(users!=null){
+            return R.success(users);
+        }
+        return R.fail("用户不存在");
+    }
+
+
 
 
 }
