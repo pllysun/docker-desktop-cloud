@@ -18,7 +18,7 @@ public interface ContainerMapper extends BaseMapper<PodController> {
 
     void updateContainerName(@Param("podControllerId") Integer podControllerId,@Param("containerName") String containerName);
 
-    void updateSystemDisk(@Param("podControllerId")Integer podControllerId,@Param("podControllerSystemDisk") Integer podControllerSystemDisk);
+    void updateDataDisk(@Param("podControllerId")Integer podControllerId,@Param("podControllerDataDisk") Integer podControllerDataDisk);
 
     String selectContainerNameById(Integer podControllerId);
 

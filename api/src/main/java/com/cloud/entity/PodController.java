@@ -64,11 +64,6 @@ public class PodController {
     private Integer podControllerMemory;
 
     /**
-     *  桌面系统盘
-     */
-    private Integer podControllerSystemDisk;
-
-    /**
      *   桌面数据盘
      */
     private Integer podControllerDataDisk;

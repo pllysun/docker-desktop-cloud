@@ -29,4 +29,16 @@
                   and recommended_occupation.occupation_id = occupation_table.occupation_id
     </select>
 
+    <select id="deskTopCountLimit" resultType="Integer">
+        select number_of_desktops from user_table
+        where user_id = #{userId}
+    </select>
+
+    <update id="addDeskTop">
+        update user_table set number_of_desktops = number_of_desktops + 1 where user_id = #{userId}
+    </update>
+
+    <update id="deleteDeskTop">
+        update user_table set number_of_desktops = number_of_desktops - 1 where user_id = #{userId}
+    </update>
 </mapper>

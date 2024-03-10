@@ -1,14 +1,10 @@
 package com.cloud.utils;
 
-import com.cloud.DTO.ContainerDto;
-import com.cloud.DTO.DeskTopDto;
-import com.cloud.DTO.ImageDto;
-import com.cloud.DTO.UserImageDto;
-import com.cloud.entity.ConfigEntity;
-import com.cloud.entity.Image;
-import com.cloud.entity.PodController;
-import com.cloud.entity.Recommend;
+import com.cloud.DTO.*;
+import com.cloud.entity.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -28,12 +24,11 @@ public class TypeUtil {
         podController.setNetworkId(deskTopDto.getNetworkId());//todo 这里的网络还没改
         podController.setIpAddress(ip);
         podController.setPodControllerName(deskTopDto.getPodControllerName());
-        podController.setContainerState(ConfigEntity.ContainerStatus);
+        podController.setContainerState(ConfigEntity.Open_Container_Status);
         podController.setPodControllerCpu(deskTopDto.getImageDto().getRecommendedCpu());
         podController.setPodControllerMemory(deskTopDto.getImageDto().getRecommendedMemory());
         podController.setPodControllerDataDisk(deskTopDto.getImageDto().getRecommendedDataDisk());
-        podController.setPodControllerSystemDisk(deskTopDto.getImageDto().getRecommendedSystemDisk());
-        podController.setPodControllerVersion(ConfigEntity.InitialRelease);
+        podController.setPodControllerVersion(ConfigEntity.Initial_Release);
         return podController;
     }
 
@@ -70,13 +65,12 @@ public class TypeUtil {
      * 检查存储
      * @param GB
      * @param PodControllerDataDisk
-     * @param PodControllerSystemDisk
      * @return
      */
-    public static boolean CheckConfig(Integer GB,Integer PodControllerDataDisk,Integer PodControllerSystemDisk){
-        if(PodControllerDataDisk<=0||PodControllerSystemDisk<=0
-                ||(PodControllerSystemDisk+PodControllerDataDisk>ConfigEntity.Disk_Top)
-                ||(PodControllerDataDisk+PodControllerSystemDisk>GB))return false;
+    public static boolean CheckConfig(Integer GB,Integer PodControllerDataDisk){
+        if(PodControllerDataDisk<=0
+                ||PodControllerDataDisk>ConfigEntity.Disk_Top
+                ||(PodControllerDataDisk>GB))return false;
         return true;
     }
 
@@ -104,6 +98,22 @@ public class TypeUtil {
         return image;
     }
 
-
-
+    /**
+     * 创建时间-数据集
+     * @param imageUseCount
+     * @param deskCount
+     * @return
+     */
+    public static List<Date_Value> CreateDateValue(List<DateImageUseCount> imageUseCount, List<DateDeskCount> deskCount,List<DateSumAndUseDto> dateSumAndUseDtos) {
+        List<Date_Value> date_values = new ArrayList<>();
+        for(int i=0;i<imageUseCount.size();i++){
+            Date_Value date_value=new Date_Value();
+            date_value.setDateTime(imageUseCount.get(i).getDateTime());
+            date_value.setDeskCount(deskCount.get(i).getDeskCount());
+            date_value.setImageUseCount(imageUseCount.get(i).getImageUseCount());
+            date_value.setDeskUse(dateSumAndUseDtos.get(i).getUseNum());
+            date_values.add(date_value);
+        }
+        return  date_values;
+    }
 }

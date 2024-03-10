@@ -3,6 +3,7 @@ package com.cloud.controller;
 import com.cloud.DTO.ContainerDto;
 import com.cloud.DTO.PageBean;
 import com.cloud.DTO.UserImageDto;
+import com.cloud.entity.ConfigEntity;
 import com.cloud.service.ContainerService;
 import com.cloud.service.K8sService;
 import com.cloud.service.LinuxService;
@@ -129,11 +130,11 @@ public class ContainerController {
     public  R<Object> expansion(@PathVariable Integer userId,@RequestBody ContainerDto containerDto) throws ApiException, InterruptedException, JSchException, IOException {
         log.info("userId:{},桌面容器:{}",userId,containerDto);
         Integer GB= linuxService.computeStore(session);
-        if(TypeUtil.CheckConfig(GB,containerDto.getPodControllerDataDisk(),containerDto.getPodControllerSystemDisk()))return R.fail("扩容失败");
+        if(TypeUtil.CheckConfig(GB,containerDto.getPodControllerDataDisk()))return R.fail("扩容失败");
         //先关机
         close(userId,containerDto);
         k8sService.expansion(containerDto);
-        containerService.updateSystemDisk(userId,containerDto.getPodControllerId(),containerDto.getPodControllerSystemDisk());
+        containerService.updateDataDisk(userId,containerDto.getPodControllerId(),containerDto.getPodControllerDataDisk());
         return R.success("扩容成功");
     }
 
@@ -164,6 +165,9 @@ public class ContainerController {
     public  R<Object> delete(@PathVariable Integer userId,@RequestBody ContainerDto containerDto) throws ApiException, JSchException {
         //todo 定时一周自动删除-->查询的时候进行对照，然后进行删除
         containerService.deleteByPodControllerName(userId,containerDto);
+        //todo 删除用户的云桌面和网络那里
+        containerService.networkDeleteDeskTop(containerDto);
+        containerService.userDeleteDeskTop(userId);
         k8sService.deleteDeskTop(containerDto);
         k8sService.deleteNfs(containerDto);
         linuxService.deleteNfsFile(containerDto,session);
@@ -180,7 +184,7 @@ public class ContainerController {
     @PostMapping("/update/{userId}/{podControllerId}")
     public R<Object> update(@PathVariable Integer userId,@PathVariable Integer podControllerId,String containerName){
         //todo 限制桌面名称长度
-        if(containerName.length()>30)return R.fail("桌面名称长度超过限制");
+        if(containerName.length()> ConfigEntity.Container_Name_Limit)return R.fail("桌面名称长度超过限制");
         containerService.updateContainerName(userId,podControllerId,containerName);
         return R.success("更新成功");
     }

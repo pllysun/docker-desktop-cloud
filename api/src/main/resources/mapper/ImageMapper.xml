@@ -153,4 +153,17 @@
             </if>
         </where>
     </select>
+<!--        修改使用次数-->
+    <update id="addUse">
+        update image_table
+        set image_table.image_use_count=image_table.image_use_count+1
+        where image_id=#{imageId}
+    </update>
+<!--查询每日使用数量-->
+    <select id="selectListCount" resultType="com.cloud.DTO.DateImageUseCount">
+        select now() date_time,sum(image_use_count) image_use_count, user_id from image_table
+        group by user_id
+    </select>
+
+
 </mapper>

@@ -196,7 +196,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     public boolean ImageExist(ImageDto imageDto) {
         //false 即为不存在，true即为存在
         LambdaQueryWrapper<Recommend> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(Recommend::getRecommendedCpu,imageDto.getRecommendedCpu()).eq(Recommend::getRecommendedMemory,imageDto.getRecommendedMemory()).eq(Recommend::getRecommendedSystemDisk,imageDto.getRecommendedSystemDisk());
+        queryWrapper.eq(Recommend::getRecommendedCpu,imageDto.getRecommendedCpu()).eq(Recommend::getRecommendedMemory,imageDto.getRecommendedMemory());
         Recommend recommend=recommendedMapper.selectOne(queryWrapper);//获取与imageDto配置相同的id
         log.info("recommendId:{}",recommend);
         if(recommend==null)return false;//当前配置不存在说明不可能重复
@@ -222,8 +222,25 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     }
 
     @Override
-    public void addDeskTop(String networkId) {
+    public void networkAddDeskTop(String networkId) {
         networkMapper.addDeskTop(networkId);
+    }
+
+    @Override
+    public boolean userDeskTopCountLimit(Integer userId) {
+        Integer deskTopCount=usersMapper.deskTopCountLimit(userId);
+        if(deskTopCount<ConfigEntity.Number_Of_Desktop_Limit) return false;
+        return true;
+    }
+
+    @Override
+    public void userAddDeskTop(Integer userId) {
+        usersMapper.addDeskTop(userId);
+    }
+
+    @Override
+    public void imageAddUse(String imageId) {
+        imageMapper.addUse(imageId);
     }
 
 

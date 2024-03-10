@@ -57,6 +57,10 @@ public class NetworkController {
      */
     @PostMapping("/addNetwork")
     public R<Object> add(@RequestBody Network network) throws ApiException {
+        //todo 限制网络名称，防止重复网络
+
+        //todo 获取用户ip问题
+
         //生成唯一id
         network.setNetworkId(UUID.randomUUID().toString());
         networkService.save(network);
@@ -71,6 +75,8 @@ public class NetworkController {
      */
     @PutMapping("/updateNetwork")
     public R<Object> edit(@RequestBody Network network) throws ApiException {
+        //todo 限制网络名称(限制鸡毛)
+
         String oldName = networkService.getById(network.getNetworkId()).getNetworkName();
         networkService.updateById(network);
         networkService.log(network.getUserId(),ConfigEntity.Update_Network_Log_Type,ConfigEntity.Update_Network_Log_Content(oldName)+network.getNetworkName());

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.mapper.DateValueMapper">
+<!--    查找镜像使用数-->
+    <select id="getImageUseCount" resultType="com.cloud.DTO.DateImageUseCount">
+        select * from date_value
+        where date_time between #{startTime} and #{nowTime}
+    </select>
+<!--    查找桌面-->
+    <select id="getCount" resultType="Integer">
+        select desk_count from date_value where date_time =#{dateTime}
+    </select>
+
+    <select id="getSumAndUse" resultType="com.cloud.DTO.DateSumAndUseDto">
+        select date_time,user_id,desk_count,desk_use from
+    date_value where date_time between #{useTime} and #{nowTime}
+    </select>
+</mapper>

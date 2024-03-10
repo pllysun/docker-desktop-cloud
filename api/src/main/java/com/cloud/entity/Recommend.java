@@ -27,10 +27,6 @@ public class Recommend {
      */
     private Integer recommendedMemory;
 
-    /**
-     *  系统盘
-     */
-    private Integer recommendedSystemDisk;
 
     /**
      *  数据盘

@@ -13,6 +13,7 @@ import com.cloud.utils.TypeUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,12 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
     @Autowired
     Image_LabelMapper imageLabelMapper;
 
+    @Autowired
+    NetworkMapper networkMapper;
+
+    @Autowired
+    UsersMapper usersMapper;
+
     @Override
     public List<ContainerDto> List(Integer userId) {
         return containerMapper.List(userId);
@@ -62,7 +69,7 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
         LocalDateTime dateTime=LocalDateTime.now();
         containerDto.setUpdateTime(dateTime);//修改上次时间
         logMapper.insertLog(userId, ConfigEntity.Open_Log_Type,dateTime,ConfigEntity.Open_Log_Content+containerDto.getPodControllerName());
-        log.info("打开容器内容：{}",ConfigEntity.Open_Log_Content+containerDto.getPodControllerName());
+        log.info("打开容器：{}",ConfigEntity.Open_Log_Content+containerDto.getPodControllerName());
         containerMapper.openContainerState(containerDto);
     }
 
@@ -88,12 +95,12 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
 
     @Override
     @Transactional
-    public void updateSystemDisk(Integer userId,Integer podControllerId, Integer podControllerSystemDisk) {
+    public void updateDataDisk(Integer userId,Integer podControllerId,Integer podControllerDataDisk) {
         LocalDateTime dateTime=LocalDateTime.now();
         String PodControllerName= containerMapper.selectPodControllerNameById(podControllerId);
-        logMapper.insertLog(userId, ConfigEntity.Expansion_Log_Type,dateTime,ConfigEntity.Expansion_Log_Content(PodControllerName,podControllerSystemDisk));
-        log.info("扩容系统盘：{}",ConfigEntity.Expansion_Log_Content(PodControllerName,podControllerSystemDisk));
-        containerMapper.updateSystemDisk(podControllerId, podControllerSystemDisk);
+        logMapper.insertLog(userId, ConfigEntity.Expansion_Log_Type,dateTime,ConfigEntity.Expansion_Log_Content(PodControllerName,podControllerDataDisk));
+        log.info("扩容系统盘：{}",ConfigEntity.Expansion_Log_Content(PodControllerName,podControllerDataDisk));
+        containerMapper.updateDataDisk(podControllerId, podControllerDataDisk);
     }
 
     @Override
@@ -140,5 +147,15 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
             Integer labelId=labelMapper.getLabelId(label);
             imageLabelMapper.insert(new Image_Label(image.getImageId(), recommended.getRecommendedId(),labelId));
         }
+    }
+
+    @Override
+    public void networkDeleteDeskTop(ContainerDto containerDto) {
+        networkMapper.deleteDeskTop(containerDto.getNetworkId());
+    }
+
+    @Override
+    public void userDeleteDeskTop(Integer userId) {
+        usersMapper.deleteDeskTop(userId);
     }
 }

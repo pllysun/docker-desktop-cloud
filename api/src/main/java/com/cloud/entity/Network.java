@@ -33,7 +33,7 @@ public class Network {
     /**
      *  数量
      */
-    private String podCount;
+    private Integer podCount;
 
     /**
      * 网络创建时间

@@ -19,7 +19,7 @@ import java.io.IOException;
 public class ContainerApplication {
 
     public static void main(String[] args) throws IOException, JSchException {
-        //K8sConfig.k8sclient();
+        K8sConfig.k8sclient();
         SpringApplication.run(ContainerApplication.class, args);
     }
 }

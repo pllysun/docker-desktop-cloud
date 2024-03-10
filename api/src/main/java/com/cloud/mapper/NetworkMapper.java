@@ -8,4 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface NetworkMapper extends BaseMapper<Network> {
 
     void addDeskTop(String networkId);
+
+    void deleteDeskTop(Integer networkId);
 }

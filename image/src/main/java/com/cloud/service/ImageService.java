@@ -37,5 +37,11 @@ public interface ImageService extends IService<Image> {
 
     Network getNetwork(String networkId);
 
-    void addDeskTop(String networkId);
+    void networkAddDeskTop(String networkId);
+
+    boolean userDeskTopCountLimit(Integer userId);
+
+    void userAddDeskTop(Integer userId);
+
+    void imageAddUse(String imageId);
 }

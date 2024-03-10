@@ -8,6 +8,7 @@ import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.apis.NetworkingV1Api;
 import io.kubernetes.client.openapi.models.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class K8sServiceImpl implements K8sService {
 
     @Autowired
@@ -24,7 +26,8 @@ public class K8sServiceImpl implements K8sService {
     @Override
     public void addNetwork(Network network) throws ApiException {
         //设置唯一网络策略名
-        String soleName =network.getNetworkName()+network.getUserId();
+        String soleName =network.getNetworkName()+network.getUserId()+ConfigEntity.Network_Name;
+        log.info("addNetwork: {}",soleName);
         // 创建NetworkPolicy规范
         V1NetworkPolicySpec spec = new V1NetworkPolicySpec().podSelector(new V1LabelSelector()
                 .matchLabels(Map.of(ConfigEntity.Pod_Selector_Key,network.getPodSelector())))
@@ -53,4 +56,6 @@ public class K8sServiceImpl implements K8sService {
         // 删除网络策略
         networkingV1Api.deleteNamespacedNetworkPolicy(networkName, ConfigEntity.Image_NameSpace, null, null, null, null, null, null);
     }
+
+
 }

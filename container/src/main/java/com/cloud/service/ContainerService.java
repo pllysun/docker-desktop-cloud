@@ -26,7 +26,7 @@ public interface ContainerService extends IService<PodController> {
 
     void updateContainerName(Integer userId,Integer podControllerId, String containerName);
 
-    void updateSystemDisk(Integer userId,Integer podControllerId, Integer podControllerSystemDisk);
+    void updateDataDisk(Integer userId,Integer podControllerId,Integer podControllerDataDisk);
 
     void reinstall(Integer userId, ContainerDto containerDto);
 
@@ -38,4 +38,8 @@ public interface ContainerService extends IService<PodController> {
     void deleteBySystem(ContainerDto container);
 
     void upload(UserImageDto userImageDto);
+
+    void networkDeleteDeskTop(ContainerDto containerDto);
+
+    void userDeleteDeskTop(Integer userId);
 }

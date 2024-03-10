@@ -22,6 +22,11 @@ public class ContainerDto {
     private String podControllerName;
 
     /**
+     * 桌面所属网络id
+     */
+    private Integer networkId;
+
+    /**
      * 桌面所属网络
      */
     private String networkName;
@@ -56,10 +61,6 @@ public class ContainerDto {
      */
     private Integer podControllerMemory;
 
-    /**
-     *  系统盘
-     */
-    private Integer podControllerSystemDisk;
 
     /**
      *  数据盘

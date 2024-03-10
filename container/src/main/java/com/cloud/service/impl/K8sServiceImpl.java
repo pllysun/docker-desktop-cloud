@@ -101,7 +101,7 @@ public class K8sServiceImpl implements K8sService {
         volume.setMetadata(metadata);
         V1PersistentVolumeSpec spec2 = new V1PersistentVolumeSpec();
         //log.info("capacity:{}",containerDto.getPodControllerSystemDisk()+ConfigEntity.Disk_Unit);
-        spec2.setCapacity(Map.of(ConfigEntity.Capacity_Storage,new Quantity(containerDto.getPodControllerSystemDisk()+ConfigEntity.Disk_Unit)));
+        spec2.setCapacity(Map.of(ConfigEntity.Capacity_Storage,new Quantity(containerDto.getPodControllerDataDisk()+ConfigEntity.Disk_Unit)));
         spec2.setAccessModes(List.of(ConfigEntity.AccessModes));
         spec2.setPersistentVolumeReclaimPolicy(ConfigEntity.PersistentVolumeReclaimPolicy);
         spec2.setNfs(new V1NFSVolumeSource().server(ConfigEntity.Host_Ip).path(ConfigEntity.NfsFileName+soleName));
@@ -115,7 +115,7 @@ public class K8sServiceImpl implements K8sService {
         metadata2.setName(soleName+ConfigEntity.PVC_Name);
         V1PersistentVolumeClaimSpec spec3 = new V1PersistentVolumeClaimSpec();
         spec3.setAccessModes(List.of(ConfigEntity.AccessModes));
-        spec3.setResources(new V1ResourceRequirements().requests(Collections.singletonMap(ConfigEntity.Capacity_Storage,new Quantity(containerDto.getPodControllerSystemDisk()+ConfigEntity.Disk_Unit))));
+        spec3.setResources(new V1ResourceRequirements().requests(Collections.singletonMap(ConfigEntity.Capacity_Storage,new Quantity(containerDto.getPodControllerDataDisk()+ConfigEntity.Disk_Unit))));
         pvc.setMetadata(metadata2);
         pvc.setSpec(spec3);
         coreV1Api.createNamespacedPersistentVolumeClaim(ConfigEntity.Image_NameSpace,pvc,null,null,null);
@@ -128,7 +128,8 @@ public class K8sServiceImpl implements K8sService {
 
     @Override
     public void upload(UserImageDto userImageDto) {
-        // 先获取容器ip
+        // 先利用k8s的api获取容器ip
+
 
         // 然后获取运行的节点是哪个
 

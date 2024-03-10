@@ -30,9 +30,9 @@
         set container_name=#{containerName} where pod_controller_id=#{podControllerId}
     </update>
 
-    <update id="updateSystemDisk">
+    <update id="updateDataDisk">
         update pod_controller_table
-        set pod_controller_systemDisk=#{podControllerSystemDisk} where pod_controller_id=#{podControllerId}
+        set pod_controller_dataDisk=#{podControllerDataDisk} where pod_controller_id=#{podControllerId}
     </update>
 
     <select id="selectContainerNameById" resultType="String">

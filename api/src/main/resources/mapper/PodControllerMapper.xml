@@ -9,4 +9,31 @@
              user_id,network_id,ip_address,pod_controller_cpu,pod_controller_memory,pod_controller_systemDisk,pod_controller_dataDisk,pod_controller_version)
         VALUES (#{podControllerName},#{containerState},#{containerName},#{imageId},#{userId},#{networkId},#{ipAddress},#{podControllerCpu},#{podControllerMemory},#{podControllerSystemDisk},#{podControllerDataDisk},#{podControllerVersion})
     </insert>
+
+<!--    获得使用中+关闭中-->
+    <select id="getDeskTopControl" resultType="Integer">
+        select count(*)
+        from pod_controller_table
+        <where>
+            container_state =#{containerState}
+            <if test="user_id !=null ">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+<!--    获得桌面数量-->
+    <select id="getDeskTopCount" resultType="com.cloud.DTO.DateDeskCount">
+        select user_id ,count(*) desk_count,now() date_time
+        from pod_controller_table
+        group by user_id
+    </select>
+
+<!--    获得总数和使用数-->
+    <select id="getUseDeskTop" resultType="com.cloud.DTO.DateSumAndUseDto">
+        select user_id,count(*) sum_num,now() date_time
+             ,count(case when update_time between #{startTime} and #{nowTime} then 1 end) use_num
+        from pod_controller_table
+        group by user_id
+    </select>
+
 </mapper>

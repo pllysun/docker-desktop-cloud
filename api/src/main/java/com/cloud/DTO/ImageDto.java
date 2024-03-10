@@ -56,10 +56,6 @@ public class ImageDto {
      */
     private Integer recommendedMemory;
 
-    /**
-     *    推荐系统盘
-     */
-    private Integer recommendedSystemDisk;
 
     /**
      *     推荐数据盘

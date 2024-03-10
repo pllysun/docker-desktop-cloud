@@ -19,9 +19,9 @@ public class ConfigEntity {
 
     public  static final String  Service="-service";
 
-    public  static final String  ContainerStatus="Open";
+    public  static final String  Open_Container_Status="Open";
 
-    public  static final String  InitialRelease="v1";
+    public  static final String  Initial_Release="v1";
 
     public  static final String  Port_Name="http";
 
@@ -73,6 +73,22 @@ public class ConfigEntity {
 
     public static final Integer Image_Source=0;
 
+    public static final String Network_Name="-network";
+
+    public static final Integer Number_Of_Desktop_Limit=3;
+
+    public static final Integer Container_Name_Limit=30;
+
+    public static final String Close_Container_Status="Close";
+
+    public static final Integer Date_Image_Use_Count=7;
+
+    public static final String MountPath="/home";
+
+    public static final Integer Use_Time=7;
+
+    public static final Integer Today =1;
+
     public  static  String  Expansion_Log_Content(String podControllerName,Integer PodSystemDisk){
         return "扩容桌面"+podControllerName+"扩容到"+PodSystemDisk+"Gi";
     }
@@ -105,7 +121,7 @@ public class ConfigEntity {
         return "修改"+imageRemark+"桌面名称为";
     }
 
-    public static final Integer Delete_Time=3;
+    public static final Integer Delete_Time=7;
 
     public static final Integer Disk_Top=20;
 

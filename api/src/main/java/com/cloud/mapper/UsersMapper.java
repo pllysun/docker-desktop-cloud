@@ -14,4 +14,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UsersMapper extends BaseMapper<Users> {
 
     Integer getRecommendedId(Integer userId);
+
+    Integer deskTopCountLimit(Integer userId);
+
+    void addDeskTop(Integer userId);
+
+    void deleteDeskTop(Integer userId);
 }

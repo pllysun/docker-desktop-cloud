@@ -8,4 +8,10 @@
         SET pod_count = pod_count + 1
         where network_id = #{networkId}
     </update>
+
+    <update id="deleteDeskTop">
+        UPDATE network_table
+        SET pod_count = pod_count - 1
+        where network_id = #{networkId}
+    </update>
 </mapper>
