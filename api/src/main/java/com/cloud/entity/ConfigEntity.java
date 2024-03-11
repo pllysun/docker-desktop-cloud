@@ -27,11 +27,11 @@ public class ConfigEntity {
 
     public  static final String  Port_Protocol="TCP";
 
-    public  static final Integer  Port_TargetPort=80;
+    public  static final Integer  Port_TargetPort=6080;
 
     public  static final Integer  Port_Port=80;
 
-    public  static final String   Host_Ip="192.168.10.100";
+    public  static final String   Host_Ip="175.27.141.199";
 
     public  static final Integer  Close_Replicas=0;
 
@@ -88,6 +88,8 @@ public class ConfigEntity {
     public static final Integer Use_Time=7;
 
     public static final Integer Today =1;
+
+    public static final String Network_Suffix="0/24";
 
     public  static  String  Expansion_Log_Content(String podControllerName,Integer PodSystemDisk){
         return "扩容桌面"+podControllerName+"扩容到"+PodSystemDisk+"Gi";

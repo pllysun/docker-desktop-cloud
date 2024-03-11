@@ -144,7 +144,7 @@ public class ContainerController {
      * @return
      */
     @PostMapping("/upload")
-    public  R<Object> upload(@RequestBody UserImageDto userImageDto){
+    public  R<Object> upload(@RequestBody UserImageDto userImageDto) throws ApiException {
         //todo 选择标签，标签为0进行报错
         if(userImageDto.getLabelName()==null)return R.fail("必须选择一个标签");
         k8sService.upload(userImageDto);

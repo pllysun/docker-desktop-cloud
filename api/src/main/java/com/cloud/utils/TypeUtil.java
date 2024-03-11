@@ -3,6 +3,8 @@ package com.cloud.utils;
 import com.cloud.DTO.*;
 import com.cloud.entity.*;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -115,5 +117,27 @@ public class TypeUtil {
             date_values.add(date_value);
         }
         return  date_values;
+    }
+
+    /**
+     * ip转换为网段
+     * @param ip
+     * @return
+     * @throws UnknownHostException
+     */
+    public static String IpToNetWork(String ip) throws UnknownHostException {
+        char[] ipBytes= ip.toCharArray();
+        char[] netBytes=ConfigEntity.Network_Suffix.toCharArray();
+        int i=0;//第几个小数点
+        int j=0;//ip到第三位小数点的索引
+        for(j=0;j<ipBytes.length;j++){
+            if(ipBytes[j]=='.')i++;//每到一个.就++
+            if(i==3)break;//到达第三个之后直接跳出循环,此时j就是第三位小数点的索引
+        }
+        //获取0->j的ipBytes后获得网段最后几个常量进行叠加
+        char[] networkByte=new char[j+netBytes.length+1];
+        System.arraycopy(ipBytes,0,networkByte,0,j+1);
+        System.arraycopy(netBytes,0,networkByte,j+1,netBytes.length);
+        return String.valueOf(networkByte);
     }
 }

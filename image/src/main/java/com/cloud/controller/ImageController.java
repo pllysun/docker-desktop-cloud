@@ -137,7 +137,7 @@ public class ImageController {
 
     //todo 需要修改k8s代码
     /**
-     * 镜像转换为容器-->这里非常重要,pvc,pv,service,deployment，
+     * 镜像转换为桌面-->这里非常重要,pvc,pv,service,deployment，
      * @param userId
      * @param deskTopDto
      * @return
