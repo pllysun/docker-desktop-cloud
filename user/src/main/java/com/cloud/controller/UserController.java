@@ -8,9 +8,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloud.DTO.UserDTO;
 import com.cloud.DTO.UserInfoDTO;
 import com.cloud.entity.Occupation;
+import com.cloud.entity.Personalise;
 import com.cloud.entity.Role;
 import com.cloud.entity.Users;
 import com.cloud.service.OccupationService;
+import com.cloud.service.PersonaliseService;
 import com.cloud.service.RoleService;
 import com.cloud.service.UsersService;
 import com.cloud.utils.JwtUtil;
@@ -44,6 +46,9 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private PersonaliseService personaliseService;
 
     /**
      * 登录接口
@@ -190,6 +195,15 @@ public class UserController {
     }
 
 
+    /**
+     * 获取个性化信息
+     * @return 个性化信息
+     */
+    @GetMapping("/personaliseList")
+    public R<Object> personaliseList(){
+        List<Personalise> list = personaliseService.list();
+        return R.success(list);
+    }
 
 
 }
