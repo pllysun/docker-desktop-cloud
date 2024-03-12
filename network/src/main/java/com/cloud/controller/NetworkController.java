@@ -1,18 +1,22 @@
 package com.cloud.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.cloud.DTO.NetworkRequest;
 import com.cloud.entity.ConfigEntity;
 import com.cloud.entity.Network;
 import com.cloud.mapper.LabelMapper;
 import com.cloud.service.K8sService;
 import com.cloud.service.NetworkService;
 import com.cloud.utils.R;
+import com.cloud.utils.TypeUtil;
 import io.kubernetes.client.openapi.ApiException;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jmx.export.naming.IdentityNamingStrategy;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,22 +55,21 @@ public class NetworkController {
 
     /**
      * 添加网络数据
-     *
      * @param network
      * @return
      */
     @PostMapping("/addNetwork")
-    public R<Object> add(@RequestBody Network network) throws ApiException {
+    public R<Object> add(@RequestBody NetworkRequest network) throws ApiException, UnknownHostException {
         //todo 限制网络名称，防止重复网络
-
-        //todo 获取用户ip问题
-
+        //todo 获取用户ip
+        String userIP= TypeUtil.IpToNetWork(network.getRequest().getRemoteUser());
+        network.getNetwork().setUserIp(userIP);
         //生成唯一id
-        network.setNetworkId(UUID.randomUUID().toString());
-        networkService.save(network);
-        networkService.log(network.getUserId(),ConfigEntity.Create_Network_Log_Type,ConfigEntity.Create_Network_Log_Content+network.getNetworkName());
+        network.getNetwork().setNetworkId(UUID.randomUUID().toString());
+        networkService.save(network.getNetwork());
+        networkService.log(network.getNetwork().getUserId(),ConfigEntity.Create_Network_Log_Type,ConfigEntity.Create_Network_Log_Content+network.getNetwork().getNetworkName());
         //todo k8s服务
-        k8sService.addNetwork(network);
+        k8sService.addNetwork(network.getNetwork());
         return R.success("添加成功");
     }
 
@@ -75,7 +78,7 @@ public class NetworkController {
      */
     @PutMapping("/updateNetwork")
     public R<Object> edit(@RequestBody Network network) throws ApiException {
-        //todo 限制网络名称(限制鸡毛)
+        //todo 限制网络名称
 
         String oldName = networkService.getById(network.getNetworkId()).getNetworkName();
         networkService.updateById(network);

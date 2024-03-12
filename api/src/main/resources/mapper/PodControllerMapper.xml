@@ -6,8 +6,8 @@
     <insert id="insert" parameterType="com.cloud.entity.PodController">
         INSERT INTO pod_controller_table
             (pod_controller_name, container_state,container_name,image_id,
-             user_id,network_id,ip_address,pod_controller_cpu,pod_controller_memory,pod_controller_systemDisk,pod_controller_dataDisk,pod_controller_version)
-        VALUES (#{podControllerName},#{containerState},#{containerName},#{imageId},#{userId},#{networkId},#{ipAddress},#{podControllerCpu},#{podControllerMemory},#{podControllerSystemDisk},#{podControllerDataDisk},#{podControllerVersion})
+             user_id,network_id,ip_address,pod_controller_cpu,pod_controller_memory,pod_controller_dataDisk,pod_controller_version,pod_port)
+        VALUES (#{podControllerName},#{containerState},#{containerName},#{imageId},#{userId},#{networkId},#{ipAddress},#{podControllerCpu},#{podControllerMemory},#{podControllerDataDisk},#{podControllerVersion},#{podPort})
     </insert>
 
 <!--    获得使用中+关闭中-->
@@ -16,7 +16,7 @@
         from pod_controller_table
         <where>
             container_state =#{containerState}
-            <if test="user_id !=null ">
+            <if test="userId !=null ">
                 and user_id = #{userId}
             </if>
         </where>

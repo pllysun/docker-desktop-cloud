@@ -164,6 +164,8 @@
         select now() date_time,sum(image_use_count) image_use_count, user_id from image_table
         group by user_id
     </select>
-
-
+<!--根据时间排序获取到最后一个-->
+    <select id="getEndPort" resultType="Integer">
+        select pod_port from pod_controller_table order by create_time limit 1
+    </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.cloud.DTO.DeskTopControlDto;
 import com.cloud.entity.ConfigEntity;
 import com.cloud.service.ControlService;
 import com.cloud.utils.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 //todo 未测试
 @RestController
+@Slf4j
 @RequestMapping("/control")
 public class ControlController {
 
@@ -45,6 +47,7 @@ public class ControlController {
     @GetMapping("/imageUse/{userId}")
     public R<Object> imageUse(@PathVariable Integer userId) {
         List<DateImageUseCount> list=controlService.getImageUseCount(userId);
+        log.info("获取镜像使用情况:{}",list);
         return  R.success(list);
     }
 

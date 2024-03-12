@@ -17,5 +17,5 @@ public interface K8sService {
 
     void expansion(ContainerDto containerDto) throws ApiException, InterruptedException;
 
-    void upload(UserImageDto userImageDto);
+    void upload(UserImageDto userImageDto) throws ApiException;
 }

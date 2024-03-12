@@ -12,5 +12,5 @@ import org.springframework.stereotype.Service;
 public interface K8sService {
 
 
-    String createDeskTop(Integer userId,  DeskTopDto deskTopDto, Network network) throws ApiException, JSchException;
+    String createDeskTop(Integer userId,  DeskTopDto deskTopDto, Network network,Integer podPort) throws ApiException, JSchException;
 }

@@ -4,6 +4,7 @@ import com.cloud.DTO.DeskTopDto;
 import com.cloud.entity.ConfigEntity;
 import com.cloud.entity.Network;
 import com.cloud.service.K8sService;
+import com.cloud.utils.TypeUtil;
 import io.kubernetes.client.custom.IntOrString;
 import io.kubernetes.client.custom.Quantity;
 import io.kubernetes.client.openapi.ApiException;
@@ -31,7 +32,7 @@ public class K8sServiceImpl implements K8sService {
 
     //todo 这里需要进行存储挂载修改
     @Override
-    public String createDeskTop(Integer userId, DeskTopDto deskTopDto, Network network) throws ApiException {
+    public String createDeskTop(Integer userId, DeskTopDto deskTopDto, Network network,Integer podPort) throws ApiException {
         String soleName=deskTopDto.getPodControllerName()+"-"+userId;
         //todo 挂载存储
 
@@ -90,7 +91,7 @@ public class K8sServiceImpl implements K8sService {
         //运行容器
         appsV1Api.createNamespacedDeployment(ConfigEntity.Image_NameSpace, deployment, null, null, null);
 
-        //todo 开放端口(这里要随机端口)
+        //todo 随机端口号
         V1Service service = new V1Service();
         V1ObjectMeta metadata3 = new V1ObjectMeta();
         metadata3.setName(soleName+ConfigEntity.Service);
@@ -100,7 +101,7 @@ public class K8sServiceImpl implements K8sService {
         spec.setType(ConfigEntity.Service_Type);
         V1ServicePort port = new V1ServicePort();//-->端口信息
         port.setName(ConfigEntity.Port_Name);//端口名
-        port.setPort(ConfigEntity.Port_Port);//service端口
+        port.setPort(deskTopDto.getPodPort());//service端口（这个要随机）
         port.setProtocol(ConfigEntity.Port_Protocol);//端口使用协议
         port.setTargetPort(new IntOrString(ConfigEntity.Port_TargetPort));//pod端口-->nginx
         spec.setPorts(Collections.singletonList(port));//主机端口

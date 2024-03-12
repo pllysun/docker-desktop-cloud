@@ -24,4 +24,9 @@ public class DeskTopDto {
      * 容器名称（唯一）
      */
     String podControllerName;
+
+    /**
+     * 端口
+     */
+    Integer podPort;
 }

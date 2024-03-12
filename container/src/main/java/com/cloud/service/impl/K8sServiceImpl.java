@@ -8,6 +8,7 @@ import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.*;
+import io.kubernetes.client.proto.V1Apps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -127,9 +128,9 @@ public class K8sServiceImpl implements K8sService {
     }
 
     @Override
-    public void upload(UserImageDto userImageDto) {
+    public void upload(UserImageDto userImageDto) throws ApiException {
         // 先利用k8s的api获取容器ip
-
+        V1Deployment deployment=appsV1Api.readNamespacedDeployment(userImageDto.getContainerDto().getPodControllerName(),ConfigEntity.Image_NameSpace,null,null,null);
 
         // 然后获取运行的节点是哪个
 

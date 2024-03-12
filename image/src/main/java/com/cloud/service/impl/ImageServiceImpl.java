@@ -243,5 +243,10 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         imageMapper.addUse(imageId);
     }
 
+    @Override
+    public Integer getEndPort() {
+        return  imageMapper.getEndPort();
+    }
+
 
 }

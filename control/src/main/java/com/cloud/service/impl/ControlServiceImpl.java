@@ -9,6 +9,7 @@ import com.cloud.entity.Date_Value;
 import com.cloud.mapper.DateValueMapper;
 import com.cloud.mapper.PodControllerMapper;
 import com.cloud.service.ControlService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ControlServiceImpl implements ControlService {
 
     @Autowired
@@ -46,7 +48,8 @@ public class ControlServiceImpl implements ControlService {
     public List<DateImageUseCount> getImageUseCount(Integer userId) {
         LocalDateTime localDateTime=LocalDateTime.now();
         LocalDateTime  startTime=localDateTime.minusDays(ConfigEntity.Date_Image_Use_Count);
-        return dateValueMapper.getImageUseCount(userId,localDateTime,startTime);
+        log.info("开始时间：{},结束时间:{}",startTime,localDateTime);
+        return dateValueMapper.getImageUseCount(userId,startTime,localDateTime);
     }
 
     /**
@@ -58,11 +61,20 @@ public class ControlServiceImpl implements ControlService {
     public Integer getExpireProportion(Integer userId) {
         LocalDateTime nowTime=LocalDateTime.now();
         LocalDateTime deleteTime=nowTime.minusDays(ConfigEntity.Delete_Time);
-        Integer nowCount=dateValueMapper.getCount(userId,nowTime);
-        Integer sumCount=dateValueMapper.getCount(userId,deleteTime);
-        return (nowCount/sumCount)*100;
+        log.info("开始时间：{},结束时间:{}",deleteTime,nowTime);
+        Integer nowCount=dateValueMapper.getCount(userId,nowTime,nowTime.minusDays(1));//现在的桌面数
+        log.info("现在的桌面数：{}",nowCount);
+        Integer sumCount=dateValueMapper.getCount(userId,deleteTime,deleteTime.minusDays(1));//7天前的桌面数
+        log.info("7天前的桌面数：{}",sumCount);
+        if(nowCount==null)return 0;
+        return (nowCount*100/sumCount*100)/100;
     }
 
+    /**
+     * 总数和桌面数
+     * @param userId
+     * @return
+     */
     @Override
     public List<DateSumAndUseDto> getSumAndUse(Integer userId) {
         LocalDateTime nowTime=LocalDateTime.now();
