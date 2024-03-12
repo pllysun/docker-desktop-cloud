@@ -5,16 +5,16 @@
 <mapper namespace="com.cloud.mapper.DateValueMapper">
 <!--    查找镜像使用数-->
     <select id="getImageUseCount" resultType="com.cloud.DTO.DateImageUseCount">
-        select * from date_value
-        where date_time between #{startTime} and #{nowTime}
+        select date_time,image_use_count,user_id from date_value
+        where date_time between #{startTime} and #{nowTime} and user_id = #{userId}
     </select>
 <!--    查找桌面-->
     <select id="getCount" resultType="Integer">
-        select desk_count from date_value where date_time =#{dateTime}
+        select desk_count from date_value where date_time between #{yesterday} and #{dateTime} and user_id = #{userId}
     </select>
 
     <select id="getSumAndUse" resultType="com.cloud.DTO.DateSumAndUseDto">
-        select date_time,user_id,desk_count,desk_use from
+        select date_time,user_id,desk_count sumNum,desk_use useNum from
     date_value where date_time between #{useTime} and #{nowTime}
     </select>
 </mapper>

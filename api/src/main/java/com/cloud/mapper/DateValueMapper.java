@@ -14,11 +14,11 @@ import java.util.List;
 public interface DateValueMapper extends BaseMapper<Date_Value> {
 
 
-    List<DateImageUseCount> getImageUseCount(@Param("userId") Integer userId,@Param("nowTime") LocalDateTime nowTime,@Param("startTime") LocalDateTime startTime);
+    List<DateImageUseCount> getImageUseCount(@Param("userId") Integer userId,@Param("startTime") LocalDateTime startTime,@Param("nowTime") LocalDateTime nowTime);
 
 
 
-    Integer getCount(@Param("userId") Integer userId,@Param("dateTime") LocalDateTime dateTime);
+    Integer getCount(@Param("userId") Integer userId,@Param("dateTime") LocalDateTime dateTime,@Param("yesterday") LocalDateTime yesterday);
 
     List<DateSumAndUseDto> getSumAndUse(@Param("userId") Integer userId,@Param("nowTime") LocalDateTime nowTime,@Param("useTime") LocalDateTime useTime);
 }
