@@ -82,4 +82,9 @@ public class PodController {
      *   桌面版本
      */
     private String podControllerVersion;
+
+    /**
+     * 桌面端口
+     */
+    private Integer podPort;
 }

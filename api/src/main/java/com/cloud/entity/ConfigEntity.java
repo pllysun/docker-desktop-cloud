@@ -29,7 +29,6 @@ public class ConfigEntity {
 
     public  static final Integer  Port_TargetPort=6080;
 
-    public  static final Integer  Port_Port=80;
 
     public  static final String   Host_Ip="175.27.141.199";
 

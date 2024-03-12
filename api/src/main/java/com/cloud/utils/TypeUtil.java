@@ -31,6 +31,7 @@ public class TypeUtil {
         podController.setPodControllerMemory(deskTopDto.getImageDto().getRecommendedMemory());
         podController.setPodControllerDataDisk(deskTopDto.getImageDto().getRecommendedDataDisk());
         podController.setPodControllerVersion(ConfigEntity.Initial_Release);
+        podController.setPodPort(deskTopDto.getPodPort());
         return podController;
     }
 

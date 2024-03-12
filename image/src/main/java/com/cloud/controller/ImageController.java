@@ -165,7 +165,12 @@ public class ImageController {
         linuxService.connectNfs(userId,deskTopDto,session);
         linuxService.restartNfs(session);
         Network network=imageService.getNetwork(deskTopDto.getNetworkId());
-        String ip=k8sService.createDeskTop(userId,deskTopDto,network);
+        //获取podPort
+        int podPort=2000;//port存在的话继续随机
+        Integer endPort=imageService.getEndPort();
+        if(endPort!=null)podPort=endPort+1;//当没有一个容器的时候使用2000，如果有容器获得到最后一位
+        deskTopDto.setPodPort(podPort);
+        String ip=k8sService.createDeskTop(userId,deskTopDto,network,podPort);
         //桌面容器添加到数据库中
         imageService.setDeskTop(userId,ip,deskTopDto);
         //该网络添加一个云桌面

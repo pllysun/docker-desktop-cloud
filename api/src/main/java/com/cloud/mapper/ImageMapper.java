@@ -27,4 +27,6 @@ public interface ImageMapper extends BaseMapper<Image> {
     void addUse(String imageId);
 
     List<DateImageUseCount> selectListCount();
+
+    Integer getEndPort();
 }
