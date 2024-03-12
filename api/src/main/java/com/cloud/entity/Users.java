@@ -47,15 +47,6 @@ public class Users implements Serializable {
      */
     private String phone;
 
-    /**
-     * 性别
-     */
-    private String sex;
-
-    /**
-     * 年龄
-     */
-    private String age;
 
     /**
      *  职业id
