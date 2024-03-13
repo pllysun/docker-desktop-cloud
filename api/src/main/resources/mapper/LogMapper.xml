@@ -5,9 +5,10 @@
 <mapper namespace="com.cloud.mapper.LogMapper">
 
     <select id="listAll" resultType="com.cloud.DTO.LogDto">
-        select * from log_table,log_type_table
+        select * from log_table,log_type_table,user_table
         <where>
             log_table.log_type_id=log_type_table.log_type_id
+            and  log_table.user_id=user_table.user_id
         <if test="userId!=null">
             and log_table.user_id=#{userId}
         </if>

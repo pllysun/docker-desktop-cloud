@@ -20,10 +20,15 @@ public class LogDto {
     /**
      *  日志发生时间
      */
-    private LocalDateTime localTime;
+    private LocalDateTime logTime;
 
     /**
      * 日志内容
      */
     private String logContent;
+
+    /**
+     * 用户名
+     */
+    private String userName;
 }

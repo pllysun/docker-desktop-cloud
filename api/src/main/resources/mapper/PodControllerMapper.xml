@@ -35,5 +35,4 @@
         from pod_controller_table
         group by user_id
     </select>
-
 </mapper>

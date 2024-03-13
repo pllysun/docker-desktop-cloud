@@ -35,6 +35,7 @@ public class ControlController {
      */
     @GetMapping("/deskTopUser/{userId}")
     public R<Object> deskTopControl(@PathVariable Integer userId) {
+        log.info("userId:{}",userId);
         DeskTopControlDto deskTopControlDto= controlService.getDeskTopControl(userId);
         return R.success(deskTopControlDto);
     }
@@ -59,6 +60,7 @@ public class ControlController {
      */
     @GetMapping("/expireProportion/{userId}")
     public R<Object> expireProportion(@PathVariable Integer userId) {
+        log.info("userId{}",userId);
         Integer proportion=controlService.getExpireProportion(userId);
         return  R.success(proportion);
     }
