@@ -10,6 +10,7 @@ import com.cloud.service.NetworkService;
 import com.cloud.utils.R;
 import com.cloud.utils.TypeUtil;
 import io.kubernetes.client.openapi.ApiException;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jmx.export.naming.IdentityNamingStrategy;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/network")
+@Slf4j
 public class NetworkController {
 
     @Autowired

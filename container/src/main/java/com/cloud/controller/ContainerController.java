@@ -28,7 +28,6 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@RequestMapping("/container")
 public class ContainerController {
 
 

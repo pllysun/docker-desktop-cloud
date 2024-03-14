@@ -18,7 +18,6 @@ import java.util.List;
 //todo 未测试
 @RestController
 @Slf4j
-@RequestMapping("/control")
 public class ControlController {
 
     @Autowired
