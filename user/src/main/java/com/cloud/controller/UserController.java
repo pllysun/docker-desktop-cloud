@@ -6,11 +6,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloud.DTO.UserDTO;
+import com.cloud.DTO.UserInfoDTO;
+import com.cloud.entity.Occupation;
+import com.cloud.entity.Personalise;
+import com.cloud.entity.Role;
 import com.cloud.entity.Users;
+import com.cloud.service.OccupationService;
+import com.cloud.service.PersonaliseService;
+import com.cloud.service.RoleService;
 import com.cloud.service.UsersService;
 import com.cloud.utils.JwtUtil;
 import com.cloud.utils.R;
 import com.cloud.utils.RedisCache;
+import com.cloud.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +34,21 @@ import java.util.List;
  **/
 @RestController
 @Controller
-@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UsersService usersService;
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private OccupationService occupationService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private PersonaliseService personaliseService;
 
     /**
      * 登录接口
@@ -83,7 +99,14 @@ public class UserController {
         LambdaQueryWrapper<Users> users=new LambdaQueryWrapper<>();
         LambdaQueryWrapper<Users> eq = users.eq(Users::getUsername, username);
         Users one = usersService.getOne(eq);
-        return  R.success(one);
+        LambdaQueryWrapper<Occupation> occupation = new QueryWrapper<Occupation>().lambda();
+        occupation.eq(Occupation::getOccupationId, one.getOccupationId());
+        Occupation one1 = occupationService.getOne(occupation);
+        LambdaQueryWrapper<Role> role=new LambdaQueryWrapper<>();
+        role.eq(Role::getRoleId, one.getRoleId());
+        Role one2 = roleService.getOne(role);
+        UserInfoVo userInfoVo = new UserInfoVo(one,one1.getOccupationName(),one2.getRoleName());
+        return  R.success(userInfoVo);
     }
 
     /**
@@ -142,21 +165,45 @@ public class UserController {
 
     /**
      * 修改（添加）用户信息
-     * @param user
+     * 修改什么信息传什么信息的数据，如果不修改不传或者为null即可
+     * @param user 用户信息
      * @return
      */
     @PostMapping("/userInfo")
-    public R<Object> getUserInfo(@RequestBody UserDTO user){
-        LambdaQueryWrapper<Users> lambda = new QueryWrapper<Users>().lambda();
-        lambda.eq(Users::getUsername, user.getUsername());
-        Users users = usersService.getOne(lambda);
-        if(users!=null){
-            return R.success(users);
+    public R<Object> getUserInfo(@RequestBody UserInfoDTO user,HttpServletRequest request){
+        String username = JwtUtil.getUsername(request);
+        LambdaQueryWrapper<Users> users=new LambdaQueryWrapper<>();
+        users.eq(Users::getUsername, username);
+        Users one = usersService.getOne(users);
+        if(user.getOccupationId()!=null){
+            one.setOccupationId(Integer.valueOf(user.getOccupationId()));
         }
-        return R.fail("用户不存在");
+        if(user.getPhone()!=null){
+            one.setPhone(user.getPhone());
+        }
+        if(user.getEmail()!=null){
+            one.setEmail(user.getEmail());
+        }
+        if(user.getRoleId()!=null){
+            one.setRoleId(Integer.valueOf(user.getRoleId()));
+        }
+        boolean update = usersService.updateById(one);
+        if(update){
+            return R.success("修改成功");
+        }
+        return R.fail("修改失败");
     }
 
 
+    /**
+     * 获取个性化信息
+     * @return 个性化信息
+     */
+    @GetMapping("/personaliseList")
+    public R<Object> personaliseList(){
+        List<Personalise> list = personaliseService.list();
+        return R.success(list);
+    }
 
 
 }
