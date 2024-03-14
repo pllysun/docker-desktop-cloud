@@ -90,6 +90,10 @@ public class ConfigEntity {
 
     public static final String Network_Suffix="0/24";
 
+    public static final String Docker_Tcp="tcp://118.195.216.42:2375";
+
+    public static final String Image="-image";
+
     public  static  String  Expansion_Log_Content(String podControllerName,Integer PodSystemDisk){
         return "扩容桌面"+podControllerName+"扩容到"+PodSystemDisk+"Gi";
     }

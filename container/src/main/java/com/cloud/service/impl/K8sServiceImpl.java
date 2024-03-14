@@ -3,6 +3,8 @@ import com.cloud.DTO.ContainerDto;
 import com.cloud.DTO.UserImageDto;
 import com.cloud.entity.ConfigEntity;
 import com.cloud.service.K8sService;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.core.DockerClientImpl;
 import io.kubernetes.client.custom.Quantity;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
@@ -27,6 +29,9 @@ public class K8sServiceImpl implements K8sService {
 
     @Autowired
     private AppsV1Api appsV1Api;
+
+    @Autowired
+    private DockerClient dockerClient;
 
     @Override
     public void openDeskTop(ContainerDto containerDto) throws ApiException {
@@ -131,14 +136,32 @@ public class K8sServiceImpl implements K8sService {
     public void upload(UserImageDto userImageDto) throws ApiException {
         // 先利用k8s的api获取容器ip
         V1Deployment deployment=appsV1Api.readNamespacedDeployment(userImageDto.getContainerDto().getPodControllerName(),ConfigEntity.Image_NameSpace,null,null,null);
-
-        // 然后获取运行的节点是哪个
-
-        // 然后连接该节点，然后docker commit
-
-        // 然后上传到docker hub
-
-        // 然后从节点删除镜像
+        String labelSelector = deployment.getSpec().getSelector().getMatchLabels().entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .reduce((first, second) -> first + "," + second)
+                .orElse("");//获取标签选择器
+        V1PodList podList = coreV1Api.listNamespacedPod(ConfigEntity.Image_NameSpace, null, null, null, null, labelSelector, null, null, null, null, null);
+        String containerID = null;
+        for (V1Pod item : podList.getItems()) {
+            //System.out.println("Pod Name: " + item.getMetadata().getName());
+            // 遍历每个容器
+            containerID = item.getStatus().getContainerStatuses().get(0).getContainerID();//获取容器id
+        }
+        int i = 0;//“/”的个数
+        for (char c : containerID.toCharArray()) {
+            if (c == '/'){
+                i++;
+            }
+            if (i == 2) {
+                containerID = containerID.substring(containerID.indexOf("/") + 2);
+                break;
+            }
+        }//获取容器id
+        System.out.println(containerID);
+        String newImageName=userImageDto.getContainerDto().getPodControllerName()+userImageDto.getContainerDto().getUserId()+ConfigEntity.Image;
+        if (containerID != null) {
+            dockerClient.commitCmd(containerID).withRepository(newImageName).exec();//镜像名称为pod_controller_id
+        }
 
     }
 }
