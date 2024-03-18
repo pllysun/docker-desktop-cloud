@@ -22,7 +22,7 @@ public class LinuxConfig {
     //@Value("${Linux.filename}")
     public  String filename="/root/data/";
     //@Value("${Nfs.order}")
-    public  String NfsOrder="175.27.141.0/24(rw,no_root_squash)";
+    public  String NfsOrder="10.206.16.0/24(rw,no_root_squash)";
     //@Value("${Nfs.file}")
     public  String NfsFile="/etc/exports";
 

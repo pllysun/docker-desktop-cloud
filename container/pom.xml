@@ -54,7 +54,7 @@
         <artifactId>fastjson</artifactId>
         <version>1.2.4</version>
     </dependency>
-
+    </dependencies>
     <!--引入部署插件-->
     <build>
         <!--jar包名字，如果不指定，默认为：模块名+-1.0-SNAPSHOT.jar-->

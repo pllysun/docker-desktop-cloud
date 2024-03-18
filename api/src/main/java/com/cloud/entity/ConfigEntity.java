@@ -27,7 +27,7 @@ public class ConfigEntity {
 
     public  static final String  Port_Protocol="TCP";
 
-    public  static final Integer  Port_TargetPort=6080;
+    public  static final Integer  Port_TargetPort=6901;
 
 
     public  static final String   Host_Ip="175.27.141.199";
@@ -74,7 +74,7 @@ public class ConfigEntity {
 
     public static final String Network_Name="-network";
 
-    public static final Integer Number_Of_Desktop_Limit=3;
+    public static final Integer Number_Of_Desktop_Limit=6;
 
     public static final Integer Container_Name_Limit=30;
 
@@ -95,6 +95,8 @@ public class ConfigEntity {
     public static final String Image="-image";
 
     public static final String Image_Pull_Policy="Never";
+
+    public static final String Nfs_Ip="10.206.16.17";
 
     public  static  String  Expansion_Log_Content(String podControllerName,Integer PodSystemDisk){
         return "扩容桌面"+podControllerName+"扩容到"+PodSystemDisk+"Gi";

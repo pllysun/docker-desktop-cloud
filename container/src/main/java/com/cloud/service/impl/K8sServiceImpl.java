@@ -110,7 +110,7 @@ public class K8sServiceImpl implements K8sService {
         spec2.setCapacity(Map.of(ConfigEntity.Capacity_Storage,new Quantity(containerDto.getPodControllerDataDisk()+ConfigEntity.Disk_Unit)));
         spec2.setAccessModes(List.of(ConfigEntity.AccessModes));
         spec2.setPersistentVolumeReclaimPolicy(ConfigEntity.PersistentVolumeReclaimPolicy);
-        spec2.setNfs(new V1NFSVolumeSource().server(ConfigEntity.Host_Ip).path(ConfigEntity.NfsFileName+soleName));
+        spec2.setNfs(new V1NFSVolumeSource().server(ConfigEntity.Nfs_Ip).path(ConfigEntity.NfsFileName+soleName));
         //安装配置
         volume.setSpec(spec2);
         //创建pv

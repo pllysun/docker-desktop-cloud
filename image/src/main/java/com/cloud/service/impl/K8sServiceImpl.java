@@ -51,7 +51,7 @@ public class K8sServiceImpl implements K8sService {
         spec2.setCapacity(Map.of(ConfigEntity.Capacity_Storage,new Quantity(deskTopDto.getImageDto().getRecommendedDataDisk()+ConfigEntity.Disk_Unit)));
         spec2.setAccessModes(List.of(ConfigEntity.AccessModes));
         spec2.setPersistentVolumeReclaimPolicy(ConfigEntity.PersistentVolumeReclaimPolicy);
-        spec2.setNfs(new V1NFSVolumeSource().server(ConfigEntity.Host_Ip).path(ConfigEntity.NfsFileName+soleName));
+        spec2.setNfs(new V1NFSVolumeSource().server(ConfigEntity.Nfs_Ip).path(ConfigEntity.NfsFileName+soleName));
         //安装配置
         volume.setSpec(spec2);
         //创建pv
@@ -80,10 +80,12 @@ public class K8sServiceImpl implements K8sService {
         spec1.setRevisionHistoryLimit(ConfigEntity.RevisionHistoryLimit);//回退版本数设置
         spec1.setReplicas(ConfigEntity.Replicas);//副本数量
         //为pod设置cpu和memory-->记得来修改这里的绿色参数
-        spec1.setSelector(new V1LabelSelector().matchLabels(Map.of(ConfigEntity.MatchLabels_Key,soleName)));
+        spec1.setSelector(new V1LabelSelector().matchLabels(Map.of(ConfigEntity.Pod_Selector_Key,network.getPodSelector())).matchLabels(Map.of(ConfigEntity.MatchLabels_Key,soleName)));
         spec1.setTemplate(new V1PodTemplateSpec().metadata(new V1ObjectMeta().labels(Map.of(ConfigEntity.Pod_Selector_Key,network.getPodSelector())).labels(Map.of(ConfigEntity.MatchLabels_Key,soleName)))
-                .spec(new V1PodSpec().containers(Arrays.asList(new V1Container().name(soleName).image(deskTopDto.getImageDto().getImageName()).imagePullPolicy(ConfigEntity.Image_Pull_Policy)
-                .volumeMounts(Arrays.asList(new V1VolumeMount().name(ConfigEntity.VolumeName).mountPath(ConfigEntity.MountPath)))))//这里的卷暂时写成常量，volumeName暂时写成常量
+                .spec(new V1PodSpec().containers(Arrays.asList(new V1Container().name(soleName).image(deskTopDto.getImageDto().getImageName())
+                .volumeMounts(Arrays.asList(new V1VolumeMount().name(ConfigEntity.VolumeName).mountPath(ConfigEntity.MountPath)))//这里的卷暂时写成常量，volumeName暂时写成常量
+                .resources(new V1ResourceRequirements()
+                .limits(Map.of(ConfigEntity.CPU, new Quantity(deskTopDto.getImageDto().getRecommendedCpu().toString()), ConfigEntity.Memory, new Quantity(deskTopDto.getImageDto().getRecommendedMemory()+ConfigEntity.Memory_Unit))))))
                 .volumes(Arrays.asList(new V1Volume().name(ConfigEntity.VolumeName)
                 .persistentVolumeClaim(new V1PersistentVolumeClaimVolumeSource()
                 .claimName(soleName+ConfigEntity.PVC_Name)
