@@ -7,6 +7,8 @@ import io.kubernetes.client.openapi.apis.NetworkingV1Api;
 import io.kubernetes.client.util.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,7 +21,13 @@ public class K8sConfig {
      * @throws IOException
      */
     public static void k8sclient() throws IOException {
-        ApiClient apiClient = Config.fromConfig("F:\\Java_code\\docker\\config");//配置文件位置
+        ClassPathResource classPathResource = new ClassPathResource("config");
+        Resource resource = new ClassPathResource("config");
+        //获1.txt的取相对路径
+        String classPathStr = classPathResource .getFile().getPath();
+        System.out.println(classPathStr);
+        String path = resource.getFile().getPath();
+        ApiClient apiClient = Config.fromConfig(path);//配置文件位置
         // 设置默认 Api 客户端到配置
         io.kubernetes.client.openapi.Configuration.setDefaultApiClient(apiClient);
     }
