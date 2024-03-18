@@ -41,7 +41,7 @@ public class TypeUtil {
     public static String generateLetterOnlyUUID() {
         String uuid = UUID.randomUUID().toString();
         uuid = uuid.replaceAll("-", "");
-        return uuid.replaceAll("[0-9]", "X");
+        return uuid.replaceAll("[0-9]", "x");
     }
 
     /**
@@ -76,6 +76,12 @@ public class TypeUtil {
                 ||(PodControllerDataDisk>GB))return false;
         return true;
     }
+    public static boolean CheckConfig(Integer PodControllerDataDisk){
+        if(PodControllerDataDisk<=0
+                ||PodControllerDataDisk>ConfigEntity.Disk_Top)return false;
+        return true;
+    }
+
 
     /**
      * 检查资源配置

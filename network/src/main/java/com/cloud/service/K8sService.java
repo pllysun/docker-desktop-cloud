@@ -8,5 +8,5 @@ public interface K8sService {
 
     void updateNetwork(Network network,String oldName) throws ApiException;
 
-    void deleteNetwork(String networkName) throws ApiException;
+    void deleteNetwork(Network network) throws ApiException;
 }

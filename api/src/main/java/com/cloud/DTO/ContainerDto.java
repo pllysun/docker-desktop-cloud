@@ -24,7 +24,7 @@ public class ContainerDto {
     /**
      * 桌面所属网络id
      */
-    private Integer networkId;
+    private String networkId;
 
     /**
      * 桌面所属网络

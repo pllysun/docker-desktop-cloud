@@ -60,17 +60,19 @@ public class NetworkController {
      * @return
      */
     @PostMapping("/addNetwork")
-    public R<Object> add(@RequestBody NetworkRequest network) throws ApiException, UnknownHostException {
+    public R<Object> add(@RequestBody Network network,HttpServletRequest request) throws ApiException, UnknownHostException {
         //todo 限制网络名称，防止重复网络
+        log.info("request:{}",request.getHeader("X-Real-IP"));
         //todo 获取用户ip
-        String userIP= TypeUtil.IpToNetWork(network.getRequest().getRemoteUser());
-        network.getNetwork().setUserIp(userIP);
+        String userIP= TypeUtil.IpToNetWork(network.getUserIp());
+        network.setUserIp(userIP);
+        network.setPodCount(0);
         //生成唯一id
-        network.getNetwork().setNetworkId(UUID.randomUUID().toString());
-        networkService.save(network.getNetwork());
-        networkService.log(network.getNetwork().getUserId(),ConfigEntity.Create_Network_Log_Type,ConfigEntity.Create_Network_Log_Content+network.getNetwork().getNetworkName());
+        network.setNetworkId(UUID.randomUUID().toString());
+        networkService.save(network);
+        networkService.log(network.getUserId(),ConfigEntity.Create_Network_Log_Type,ConfigEntity.Create_Network_Log_Content+network.getNetworkName());
         //todo k8s服务
-        k8sService.addNetwork(network.getNetwork());
+        k8sService.addNetwork(network);
         return R.success("添加成功");
     }
 
@@ -80,7 +82,6 @@ public class NetworkController {
     @PutMapping("/updateNetwork")
     public R<Object> edit(@RequestBody Network network) throws ApiException {
         //todo 限制网络名称
-
         String oldName = networkService.getById(network.getNetworkId()).getNetworkName();
         networkService.updateById(network);
         networkService.log(network.getUserId(),ConfigEntity.Update_Network_Log_Type,ConfigEntity.Update_Network_Log_Content(oldName)+network.getNetworkName());
@@ -98,7 +99,7 @@ public class NetworkController {
         networkService.removeById(networkId);
         networkService.log(network.getUserId(),ConfigEntity.Delete_Network_Log_Type,ConfigEntity.Delete_Network_Log_Content+network.getNetworkName());
         //todo k8s服务
-        k8sService.deleteNetwork(network.getNetworkName());
+        k8sService.deleteNetwork(network);
         return R.success("删除成功");
     }
 
@@ -111,4 +112,5 @@ public class NetworkController {
         List<Network> list = networkService.list();
         return R.success(list);
     }
+
 }

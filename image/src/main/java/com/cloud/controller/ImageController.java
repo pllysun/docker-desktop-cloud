@@ -32,8 +32,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
+
 @RestController
+@Slf4j
 public class ImageController {
 
     @Autowired
@@ -144,16 +145,16 @@ public class ImageController {
      * @throws IOException
      */
     @PostMapping("/desktop/{userId}")
-    public  R<Object> createContainer(@PathVariable Integer userId, @RequestBody DeskTopDto deskTopDto) throws ApiException, JSchException, IOException {
+    public  R<Object> createContainer(@PathVariable Integer userId, @RequestBody DeskTopDto deskTopDto) throws ApiException, JSchException, IOException, InterruptedException {
         //todo 限制用户使用的桌面数量
         if(imageService.userDeskTopCountLimit(userId))
             return R.fail("用户可使用桌面数已达上限");
         log.info("用户id:{},桌面:{}",userId,deskTopDto);
         //todo 判断这个容器是否可以正常创建（自定义镜像判断配置）
-        if(TypeUtil.CheckResourceConfig(deskTopDto.getImageDto().getRecommendedCpu(),deskTopDto.getImageDto().getRecommendedMemory()))
+        if(!TypeUtil.CheckResourceConfig(deskTopDto.getImageDto().getRecommendedCpu(),deskTopDto.getImageDto().getRecommendedMemory()))
             return R.fail("cpu和内存配置错误，请重新配置");
         Integer GB= linuxService.computeStore(session);//查看剩余资源
-        if(TypeUtil.CheckConfig(GB,deskTopDto.getImageDto().getRecommendedDataDisk()))
+        if(!TypeUtil.CheckConfig(GB,deskTopDto.getImageDto().getRecommendedDataDisk()))
             return R.fail("配置错误，请重新配置");
         //随机唯一标识码
         String podControllerName= TypeUtil.generateLetterOnlyUUID();
@@ -163,6 +164,7 @@ public class ImageController {
         linuxService.createNfsFile(userId,deskTopDto,session);
         linuxService.connectNfs(userId,deskTopDto,session);
         linuxService.restartNfs(session);
+
         Network network=imageService.getNetwork(deskTopDto.getNetworkId());
         //获取podPort
         int podPort=2000;//port存在的话继续随机
@@ -187,7 +189,7 @@ public class ImageController {
      * @param imageId-->镜像id
      * @return
      */
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/delete/{userId}")
     public R<Object> deleteImage(@PathVariable Integer userId,@RequestParam("imageId") String imageId){
         imageService.deleteImage(userId,imageId);
         return R.success("删除镜像成功");
@@ -202,9 +204,9 @@ public class ImageController {
     @PostMapping("/make/{userId}")
     public R<Object> makeImage(@PathVariable Integer userId,@RequestBody ImageDto imageDto) throws JSchException, IOException {
         //todo 判断这个容器是否可以正常创建（自定义镜像判断配置）
-        Integer GB= linuxService.computeStore(session);
-        if(TypeUtil.CheckConfig(GB,imageDto.getRecommendedDataDisk()))return R.fail("配置错误，请重新配置");
-        if(TypeUtil.CheckResourceConfig(imageDto.getRecommendedCpu(),imageDto.getRecommendedMemory()))return R.fail("cpu和内存配置错误，请重新配置");
+        log.info("imageDto:{}",imageDto);
+        if(!TypeUtil.CheckConfig(imageDto.getRecommendedDataDisk()))return R.fail("配置错误，请重新配置");
+        if(!TypeUtil.CheckResourceConfig(imageDto.getRecommendedCpu(),imageDto.getRecommendedMemory()))return R.fail("cpu和内存配置错误，请重新配置");
         if(imageService.ImageExist(imageDto))return  R.fail("镜像已存在");
         //todo 标签为0时报错
         if(imageDto.getLabelName()==null)return R.fail("至少需要一个标签");
@@ -221,14 +223,12 @@ public class ImageController {
     public R<Object> updateImage(@PathVariable Integer userId,@RequestBody ImageDto imageDto) throws JSchException, IOException {
         ///todo 判断这个容器是否可以正常创建（自定义镜像判断配置）
         Integer GB= linuxService.computeStore(session);
-        if(TypeUtil.CheckConfig(GB,imageDto.getRecommendedDataDisk()))return R.fail("配置错误，请重新配置");
-        if(TypeUtil.CheckResourceConfig(imageDto.getRecommendedCpu(),imageDto.getRecommendedMemory()))return R.fail("cpu和内存配置错误，请重新配置");
+        if(!TypeUtil.CheckConfig(GB,imageDto.getRecommendedDataDisk()))return R.fail("配置错误，请重新配置");
+        if(!TypeUtil.CheckResourceConfig(imageDto.getRecommendedCpu(),imageDto.getRecommendedMemory()))return R.fail("cpu和内存配置错误，请重新配置");
         if(imageService.ImageExist(imageDto))return  R.fail("镜像已存在");
         //todo 标签为0时报错
         if(imageDto.getLabelName()==null)return R.fail("至少需要一个标签");
         imageService.updateImage(userId,imageDto);
         return R.success("修改镜像成功");
     }
-
-
 }

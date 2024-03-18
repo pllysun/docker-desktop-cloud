@@ -26,7 +26,7 @@ public class DeskTopDto {
     String podControllerName;
 
     /**
-     * 端口
+     * 端口(自动随机)
      */
     Integer podPort;
 }

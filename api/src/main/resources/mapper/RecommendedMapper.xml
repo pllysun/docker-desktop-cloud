@@ -7,12 +7,11 @@
         select recommended_id from recommended_table
         where recommended_cpu= #{recommendedCpu}
         and recommended_memory = #{recommendedMemory}
-        and recommended_system_disk = #{recommendedSystemDisk}
         and recommended_data_disk = #{recommendedDataDisk}
     </select>
 
     <insert id="addRecommended">
-        insert into recommended_table(recommended_cpu,recommended_memory,recommended_system_disk,recommended_data_disk)
-        values(#{recommendedCpu},#{recommendedMemory},#{recommendedSystemDisk},#{recommendedDataDisk})
+        insert into recommended_table(recommended_cpu,recommended_memory,recommended_data_disk)
+        values(#{recommendedCpu},#{recommendedMemory},#{recommendedDataDisk})
     </insert>
 </mapper>

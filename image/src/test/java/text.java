@@ -1,3 +1,4 @@
+import com.cloud.config.DockerConfig;
 import com.cloud.service.LinuxService;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
@@ -11,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 @SpringBootTest
 public class text {
-    @Autowired
-    LinuxService linuxService;
+
+
 
     @Test
     public void test(){

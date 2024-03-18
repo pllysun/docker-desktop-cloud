@@ -33,17 +33,17 @@ public class LinuxConfig {
      * @throws JSchException
      */
 
-//    @Bean
-//    public Session sshConnect() throws JSchException {
-//        // 创建JSch对象
-//        JSch jsch = new JSch();
-//        // 建立SSH会话
-//        Session session = jsch.getSession(user, host, port);
-//        session.setPassword(password);
-//        session.setConfig("StrictHostKeyChecking", "no"); // 忽略HostKey检查
-//        session.connect();
-//        return session;
-//    }
+    @Bean
+    public Session sshConnect() throws JSchException {
+        // 创建JSch对象
+        JSch jsch = new JSch();
+
+        Session session = jsch.getSession(user, host, port);
+        session.setPassword(password);
+        session.setConfig("StrictHostKeyChecking", "no"); // 忽略HostKey检查
+        session.connect();
+        return session;
+    }
 
 
 }

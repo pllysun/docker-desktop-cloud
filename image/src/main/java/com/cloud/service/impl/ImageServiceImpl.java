@@ -168,8 +168,9 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         LocalDateTime dateTime=LocalDateTime.now();//当前时间
         LambdaQueryWrapper<Image> queryWrapper1=new LambdaQueryWrapper<>();
         queryWrapper1.eq(Image::getImageId,imageDto.getImageId());
-        Image oldImage=imageMapper.selectOne(queryWrapper1);
+        Image oldImage=imageMapper.selectOne(queryWrapper1);//获取旧的镜像名称
         log.info("imageDto{}",imageDto);
+        //添加日志
         logMapper.insertLog(userId,ConfigEntity.Update_Image_Log_Type,dateTime,ConfigEntity.Update_Image_Log_Content(oldImage.getImageRemark())+imageDto.getImageRemark());
         LambdaQueryWrapper<Image_Label> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(Image_Label::getImageId,imageDto.getImageId()).eq(Image_Label::getRecommendedId,imageDto.getRecommendedId());
@@ -229,7 +230,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     @Override
     public boolean userDeskTopCountLimit(Integer userId) {
         Integer deskTopCount=usersMapper.deskTopCountLimit(userId);
-        if(deskTopCount<ConfigEntity.Number_Of_Desktop_Limit) return false;
+        if(deskTopCount<ConfigEntity.Number_Of_Desktop_Limit) return false;//超过则true
         return true;
     }
 

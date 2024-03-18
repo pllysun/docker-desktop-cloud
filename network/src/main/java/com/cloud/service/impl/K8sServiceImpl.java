@@ -41,20 +41,22 @@ public class K8sServiceImpl implements K8sService {
 
     @Override
     public void updateNetwork(Network network,String oldName) throws ApiException {
-        String  oldSoleName =oldName+network.getUserId();
+        String  oldSoleName =oldName+network.getUserId()+ConfigEntity.Network_Name;
         V1NetworkPolicy existingPolicy = networkingV1Api.readNamespacedNetworkPolicy(oldSoleName, ConfigEntity.Image_NameSpace, null, null, null);
         //获取某一个字段后修改
-        String newSoleName =network.getNetworkName()+network.getUserId();
+        String newSoleName =network.getNetworkName()+network.getUserId()+ConfigEntity.Network_Name;
         existingPolicy.getMetadata().setName(newSoleName);
         //修改整体网络策略
         networkingV1Api.replaceNamespacedNetworkPolicy(oldSoleName, ConfigEntity.Image_NameSpace, existingPolicy, null, null, null);
     }
 
     @Override
-    public void deleteNetwork(String networkName) throws ApiException {
+    public void deleteNetwork(Network network) throws ApiException {
         // 调用API删除NetworkPolicy
+        String soleName =network.getNetworkName()+network.getUserId()+ConfigEntity.Network_Name;
+        log.info("删除网络策略：{}",soleName);
         // 删除网络策略
-        networkingV1Api.deleteNamespacedNetworkPolicy(networkName, ConfigEntity.Image_NameSpace, null, null, null, null, null, null);
+        networkingV1Api.deleteNamespacedNetworkPolicy(soleName, ConfigEntity.Image_NameSpace, null, null, null, null, null, null);
     }
 
 
