@@ -19,6 +19,7 @@ import com.cloud.utils.JwtUtil;
 import com.cloud.utils.R;
 import com.cloud.utils.RedisCache;
 import com.cloud.vo.UserInfoVo;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -172,6 +173,11 @@ public class UserController {
     @PostMapping("/userInfo")
     public R<Object> getUserInfo(@RequestBody UserInfoDTO user,HttpServletRequest request){
         String username = JwtUtil.getUsername(request);
+        return updateUserInfo(user, username);
+    }
+
+    @NotNull
+    private R<Object> updateUserInfo(UserInfoDTO user, String username) {
         LambdaQueryWrapper<Users> users=new LambdaQueryWrapper<>();
         users.eq(Users::getUsername, username);
         Users one = usersService.getOne(users);
@@ -194,7 +200,26 @@ public class UserController {
         return R.fail("修改失败");
     }
 
+    /**
+     * 管理员修改用户信息
+     * @param user
+     * @return
+     */
+    @PostMapping("/userInfo/management")
+    public R<Object> getUserInfo(UserInfoDTO user){
+       return updateUserInfo(user,user.getName());
+    }
 
+
+    /**
+     * 获取职位信息
+     * @return 职位信息
+     */
+    @GetMapping("/getOccupation")
+    public R<Object> getOccupation(){
+        List<Occupation> list = occupationService.list();
+        return R.success(list);
+    }
     /**
      * 获取个性化信息
      * @return 个性化信息
