@@ -200,6 +200,11 @@ public class UserController {
         return R.fail("修改失败");
     }
 
+    /**
+     * 管理员修改用户信息
+     * @param user
+     * @return
+     */
     @PostMapping("/userInfo/management")
     public R<Object> getUserInfo(UserInfoDTO user){
        return updateUserInfo(user,user.getName());
