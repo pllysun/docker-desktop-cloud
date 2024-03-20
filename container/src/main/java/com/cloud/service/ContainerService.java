@@ -5,7 +5,9 @@ import com.cloud.DTO.ContainerDto;
 import com.cloud.DTO.PageBean;
 import com.cloud.DTO.UserImageDto;
 import com.cloud.entity.PodController;
+import com.cloud.entity.label;
 
+import java.awt.*;
 import java.util.List;
 
 public interface ContainerService extends IService<PodController> {
@@ -42,4 +44,6 @@ public interface ContainerService extends IService<PodController> {
     void networkDeleteDeskTop(ContainerDto containerDto);
 
     void userDeleteDeskTop(Integer userId);
+
+    List<label> getLabel();
 }

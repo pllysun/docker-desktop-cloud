@@ -4,6 +4,8 @@ import com.cloud.DTO.ContainerDto;
 import com.cloud.DTO.PageBean;
 import com.cloud.DTO.UserImageDto;
 import com.cloud.entity.ConfigEntity;
+import com.cloud.entity.label;
+import com.cloud.mapper.LabelMapper;
 import com.cloud.service.ContainerService;
 import com.cloud.service.K8sService;
 import com.cloud.service.LinuxService;
@@ -199,5 +201,16 @@ public class ContainerController {
     public R<Object> adminList(@RequestParam(defaultValue = "1")Integer pageNum,@RequestParam(defaultValue = "10") Integer pageSize){
         PageBean containerDtos=containerService.adminList(pageNum, pageSize);
         return  R.success(containerDtos);
+    }
+
+
+    /**
+     * 获取桌面标签
+     * @return
+     */
+    @GetMapping("/label")
+    public R<Object> label(){
+        List<label> list=containerService.getLabel();
+        return R.success(list);
     }
 }

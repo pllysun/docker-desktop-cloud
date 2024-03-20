@@ -158,4 +158,10 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
     public void userDeleteDeskTop(Integer userId) {
         usersMapper.deleteDeskTop(userId);
     }
+
+    @Override
+    public List<label> getLabel() {
+        LambdaQueryWrapper<label> queryWrapper=new LambdaQueryWrapper<>();
+        return labelMapper.selectList(queryWrapper);
+    }
 }
