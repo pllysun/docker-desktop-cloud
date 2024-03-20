@@ -1,5 +1,6 @@
 package com.cloud.controller;
 import com.cloud.DTO.LogDto;
+import com.cloud.DTO.PageBean;
 import com.cloud.service.LogService;
 import com.cloud.utils.R;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ public class LogController {
     @GetMapping("/list/{userId}")
     public R<Object> list(@PathVariable Integer userId, @RequestParam(defaultValue = "1")Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, String LogTypeName){
         log.info("userId:{},pageNum:{},pageSize:{},logTypeName:{}",userId,pageNum,pageSize,LogTypeName);
-        List<LogDto> list=logService.listAll(pageNum,pageSize,userId,LogTypeName);
+        PageBean list=logService.listAll(pageNum,pageSize,userId,LogTypeName);
         return R.success(list);
     }
 
@@ -41,7 +42,7 @@ public class LogController {
     //todo 限制管理员
     public R<Object> managementList(@RequestParam(defaultValue = "1")Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, String LogTypeName){
         log.info("pageNum:{},pageSize:{},logTypeName:{}",pageNum,pageSize,LogTypeName);
-        List<LogDto> list=logService.manageListAll(pageNum,pageSize,LogTypeName);
+        PageBean list=logService.manageListAll(pageNum,pageSize,LogTypeName);
         return R.success(list);
     }
 }
