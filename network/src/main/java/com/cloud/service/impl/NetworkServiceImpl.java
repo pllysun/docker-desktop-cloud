@@ -9,10 +9,14 @@ import com.cloud.service.NetworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 @Service
 public class NetworkServiceImpl extends ServiceImpl<NetworkMapper, Network> implements NetworkService {
+    @Autowired
+    private  NetworkMapper networkMapper;
+
     @Autowired
     private LogMapper logMapper;
 
@@ -21,4 +25,12 @@ public class NetworkServiceImpl extends ServiceImpl<NetworkMapper, Network> impl
         LocalDateTime dateTime=LocalDateTime.now();
         logMapper.insertLog(userId,type,dateTime,Content);
     }
+
+    @Override
+    public boolean networkExist(Network network) {
+        Integer count=networkMapper.Exist(network.getNetworkName(),network.getUserId());
+        return count!=0;//如果不等于0说明存在
+    }
+
+
 }

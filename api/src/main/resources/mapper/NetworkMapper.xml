@@ -3,15 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cloud.mapper.NetworkMapper">
+<!--    没用的东西-->
     <update id="addDeskTop">
         UPDATE network_table
         SET pod_count = pod_count + 1
         where network_id = #{networkId}
     </update>
-
+<!--删除网络-->
     <update id="deleteDeskTop">
         UPDATE network_table
         SET pod_count = pod_count - 1
         where network_id = #{networkId}
     </update>
+<!-- 查看是否存在-->
+    <select id="Exist" resultType="Integer">
+        select  count(*) from  network_table where user_id = #{userId} and network_name=#{networkName}
+    </select>
 </mapper>

@@ -61,8 +61,8 @@ public class NetworkController {
     @PostMapping("/addNetwork")
     public R<Object> add(@RequestBody Network network,HttpServletRequest request) throws ApiException, UnknownHostException {
         //todo 限制网络名称，防止重复网络
-
-        //return R.fail("网络名已存在");
+        if(networkService.networkExist(network))
+            return R.fail("网络名已存在");
         log.info("request:{}",request.getHeader("X-Real-IP"));
         //todo 获取用户ip
         String userIP= TypeUtil.IpToNetWork(network.getUserIp());
@@ -82,7 +82,6 @@ public class NetworkController {
      */
     @PutMapping("/updateNetwork")
     public R<Object> edit(@RequestBody Network network) throws ApiException {
-        //todo 限制网络名称
         String oldName = networkService.getById(network.getNetworkId()).getNetworkName();
         networkService.updateById(network);
         networkService.log(network.getUserId(),ConfigEntity.Update_Network_Log_Type,ConfigEntity.Update_Network_Log_Content(oldName)+network.getNetworkName());

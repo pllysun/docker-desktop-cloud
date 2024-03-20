@@ -6,4 +6,6 @@ import com.cloud.entity.Network;
 public interface NetworkService extends IService<Network> {
 
     void log(Integer userId,Integer type, String Content);
+
+    boolean networkExist(Network network);
 }
