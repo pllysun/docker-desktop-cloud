@@ -29,4 +29,8 @@ public class DeskTopDto {
      * 端口(自动随机)
      */
     Integer podPort;
+    /**
+     * 密码
+     */
+    String password;
 }
