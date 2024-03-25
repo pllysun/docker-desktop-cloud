@@ -14,4 +14,6 @@ public interface LabelMapper extends BaseMapper<label>{
     List<String> getlabel(@Param("imageId") String imageId,@Param("recommendedId") Integer recommendedId);
 
     Integer getLabelId(String labelName);
+
+    List<String> selectNameList();
 }

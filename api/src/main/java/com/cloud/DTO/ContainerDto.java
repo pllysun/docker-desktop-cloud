@@ -17,10 +17,14 @@ public class ContainerDto {
     private Integer podControllerId;
 
     /**
-     * 桌面名称
+     * 桌面唯一名称
      */
     private String podControllerName;
 
+    /**
+     * 桌面名称
+     */
+    private String containerName;
     /**
      * 桌面所属网络id
      */

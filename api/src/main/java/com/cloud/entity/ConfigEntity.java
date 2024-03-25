@@ -29,7 +29,6 @@ public class ConfigEntity {
 
     public  static final Integer  Port_TargetPort=6901;
 
-
     public  static final String   Host_Ip="175.27.141.199";
 
     public  static final Integer  Close_Replicas=0;
@@ -136,7 +135,7 @@ public class ConfigEntity {
 
     public static final Integer CPU_Top=2;
 
-    public static final Integer Memory_Top=10;
+    public static final Integer Memory_Top=8;
 
     public static final String Pod_Selector_Key="role";
 

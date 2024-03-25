@@ -112,5 +112,4 @@ public class NetworkController {
         List<Network> list = networkService.list();
         return R.success(list);
     }
-
 }

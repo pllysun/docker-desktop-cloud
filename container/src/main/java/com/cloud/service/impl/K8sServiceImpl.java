@@ -135,7 +135,8 @@ public class K8sServiceImpl implements K8sService {
     @Override
     public void upload(UserImageDto userImageDto) throws ApiException {
         // 先利用k8s的api获取容器ip
-        V1Deployment deployment=appsV1Api.readNamespacedDeployment(userImageDto.getContainerDto().getPodControllerName(),ConfigEntity.Image_NameSpace,null,null,null);
+        String solename=userImageDto.getContainerDto().getPodControllerName()+"-"+userImageDto.getContainerDto().getUserId();
+        V1Deployment deployment=appsV1Api.readNamespacedDeployment(solename,ConfigEntity.Image_NameSpace,null,null,null);
         String labelSelector = deployment.getSpec().getSelector().getMatchLabels().entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue())
                 .reduce((first, second) -> first + "," + second)

@@ -45,5 +45,5 @@ public interface ContainerService extends IService<PodController> {
 
     void userDeleteDeskTop(Integer userId);
 
-    List<label> getLabel();
+    List<String> getLabel();
 }

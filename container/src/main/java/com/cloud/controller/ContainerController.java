@@ -130,8 +130,8 @@ public class ContainerController {
     @PostMapping("/expansion/{userId}")
     public  R<Object> expansion(@PathVariable Integer userId,@RequestBody ContainerDto containerDto) throws ApiException, InterruptedException, JSchException, IOException {
         log.info("userId:{},桌面容器:{}",userId,containerDto);
-        Integer GB= linuxService.computeStore(session);
-        if(TypeUtil.CheckConfig(GB,containerDto.getPodControllerDataDisk()))return R.fail("扩容失败");
+        //Integer GB= linuxService.computeStore(session);
+        if(!TypeUtil.CheckConfig(containerDto.getPodControllerDataDisk()))return R.fail("扩容失败");
         //先关机
         close(userId,containerDto);
         k8sService.expansion(containerDto);
@@ -185,6 +185,7 @@ public class ContainerController {
     @PostMapping("/update/{userId}/{podControllerId}")
     public R<Object> update(@PathVariable Integer userId,@PathVariable Integer podControllerId,String containerName){
         //todo 限制桌面名称长度
+        if(containerName==null)return R.fail("桌面名称不能为空");
         if(containerName.length()> ConfigEntity.Container_Name_Limit)return R.fail("桌面名称长度超过限制");
         containerService.updateContainerName(userId,podControllerId,containerName);
         return R.success("更新成功");
@@ -203,14 +204,14 @@ public class ContainerController {
         return  R.success(containerDtos);
     }
 
-
     /**
      * 获取桌面标签
      * @return
      */
     @GetMapping("/label")
     public R<Object> label(){
-        List<label> list=containerService.getLabel();
+        List<String> list=containerService.getLabel();
         return R.success(list);
     }
+
 }

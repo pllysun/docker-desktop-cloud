@@ -13,5 +13,8 @@
     <select id="getLabelId" resultType="Integer">
     select label_id from label_table where label_name = #{labelName}
     </select>
+    <select id="selectNameList" resultType="java.lang.String">
+        select label_name from label_table
+    </select>
 
 </mapper>

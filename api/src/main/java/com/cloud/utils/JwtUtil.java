@@ -133,7 +133,4 @@ public class JwtUtil {
         String jwtToken = request.getHeader("Authorization");
         return JwtUtil.parseJWT(jwtToken).getSubject();
     }
-
-
-
 }

@@ -24,8 +24,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log> implements LogSe
         PageHelper.startPage(pageNum, pageSize);
         List<LogDto> logDtos = logMapper.listAll(userId, logTypeName);
         Page<LogDto> page=(Page<LogDto>) logDtos;
-        PageBean pageBean=new PageBean(page.getTotal(),page.getResult());
-        return pageBean;
+        return new PageBean(page.getTotal(),page.getResult());
     }
 
     @Override
@@ -33,7 +32,6 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log> implements LogSe
         PageHelper.startPage(pageNum, pageSize);
         List<LogDto> logDtos = logMapper.listAll(null,logTypeName);
         Page<LogDto> page=(Page<LogDto>) logDtos;
-        PageBean pageBean=new PageBean(page.getTotal(),page.getResult());
-        return pageBean;
+        return new PageBean(page.getTotal(),page.getResult());
     }
 }

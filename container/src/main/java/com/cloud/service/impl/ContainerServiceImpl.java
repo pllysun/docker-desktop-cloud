@@ -7,6 +7,7 @@ import com.cloud.DTO.ContainerDto;
 import com.cloud.DTO.PageBean;
 import com.cloud.DTO.UserImageDto;
 import com.cloud.entity.*;
+import com.cloud.entity.Image;
 import com.cloud.mapper.*;
 import com.cloud.service.ContainerService;
 import com.cloud.utils.TypeUtil;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
     @Transactional
     public void closeContainerState(Integer userId,ContainerDto containerDto) {
         LocalDateTime dateTime=LocalDateTime.now();
-        logMapper.insertLog(userId, ConfigEntity.Close_Log_Type,dateTime,ConfigEntity.Close_Log_Content+containerDto.getPodControllerName());
+        logMapper.insertLog(userId, ConfigEntity.Close_Log_Type,dateTime,ConfigEntity.Close_Log_Content+containerDto.getContainerName());
         log.info("关闭容器内容：{}",ConfigEntity.Close_Log_Content+containerDto.getPodControllerName());
         containerMapper.closeContainerState(containerDto);
     }
@@ -68,7 +70,7 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
     public void openContainerState(Integer userId,ContainerDto containerDto) {
         LocalDateTime dateTime=LocalDateTime.now();
         containerDto.setUpdateTime(dateTime);//修改上次时间
-        logMapper.insertLog(userId, ConfigEntity.Open_Log_Type,dateTime,ConfigEntity.Open_Log_Content+containerDto.getPodControllerName());
+        logMapper.insertLog(userId, ConfigEntity.Open_Log_Type,dateTime,ConfigEntity.Open_Log_Content+containerDto.getContainerName());
         log.info("打开容器：{}",ConfigEntity.Open_Log_Content+containerDto.getPodControllerName());
         containerMapper.openContainerState(containerDto);
     }
@@ -77,7 +79,7 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
     @Transactional
     public void deleteByPodControllerName(Integer userId,ContainerDto containerDto) {
         LocalDateTime dateTime=LocalDateTime.now();
-        logMapper.insertLog(userId, ConfigEntity.Delete_Log_Type,dateTime,ConfigEntity.Delete_Log_Content+containerDto.getPodControllerName());
+        logMapper.insertLog(userId, ConfigEntity.Delete_Log_Type,dateTime,ConfigEntity.Delete_Log_Content+containerDto.getContainerName());
         log.info("删除容器内容：{}",ConfigEntity.Delete_Log_Content+containerDto.getPodControllerName());
         containerMapper.deleteById(containerDto.getPodControllerId());
     }
@@ -106,7 +108,7 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
     @Override
     public void reinstall(Integer userId, ContainerDto containerDto) {
         LocalDateTime dateTime=LocalDateTime.now();
-        logMapper.insertLog(userId, ConfigEntity.Reinstall_Log_Type,dateTime,ConfigEntity.Reinstall_Log_Content+containerDto.getPodControllerName());
+        logMapper.insertLog(userId, ConfigEntity.Reinstall_Log_Type,dateTime,ConfigEntity.Reinstall_Log_Content+containerDto.getContainerName());
         log.info("重新安装：{}",ConfigEntity.Reinstall_Log_Content+containerDto.getPodControllerName());
     }
 
@@ -160,8 +162,7 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
     }
 
     @Override
-    public List<label> getLabel() {
-        LambdaQueryWrapper<label> queryWrapper=new LambdaQueryWrapper<>();
-        return labelMapper.selectList(queryWrapper);
+    public List<String> getLabel() {
+        return labelMapper.selectNameList();
     }
 }
