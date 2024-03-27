@@ -46,4 +46,6 @@ public interface ImageService extends IService<Image> {
     void imageAddUse(String imageId);
 
     Integer getEndPort();
+
+    void customImage(Integer userId, ImageDto imageDto);
 }

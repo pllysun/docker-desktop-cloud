@@ -69,7 +69,10 @@ public class ConfigEntity {
 
     public static final  Integer Expansion_Log_Type=5;
 
-    public static final Integer Image_Source=0;
+    public static final Integer Office_Image_Source=0;
+
+    public static final Integer Custom_Image_Source=2;
+
 
     public static final String Network_Name="-network";
 

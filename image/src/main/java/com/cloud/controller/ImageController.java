@@ -135,7 +135,6 @@ public class ImageController {
         return R.success(imageSystem);
     }
 
-    //todo 需要修改k8s代码
     /**
      * 镜像转换为桌面-->这里非常重要,pvc,pv,service,deployment，
      * @param userId
@@ -173,6 +172,7 @@ public class ImageController {
         String ip=k8sService.createDeskTop(userId,deskTopDto,network,podPort);
         //桌面容器添加到数据库中
         imageService.setDeskTop(userId,ip,deskTopDto);
+
         //该网络添加一个云桌面
         imageService.networkAddDeskTop(deskTopDto.getNetworkId());
         //用户添加一个云桌面
@@ -225,9 +225,23 @@ public class ImageController {
         if(!TypeUtil.CheckConfig(imageDto.getRecommendedDataDisk()))return R.fail("配置错误，请重新配置");
         if(!TypeUtil.CheckResourceConfig(imageDto.getRecommendedCpu(),imageDto.getRecommendedMemory()))return R.fail("cpu和内存配置错误，请重新配置");
         if(imageService.ImageExist(imageDto))return  R.fail("镜像已存在");
-        //todo 标签为0时报错
+        //标签为0时报错
         if(imageDto.getLabelName()==null)return R.fail("至少需要一个标签");
         imageService.updateImage(userId,imageDto);
         return R.success("修改镜像成功");
+    }
+
+    /**
+     * 自定义镜像
+     */
+    @PostMapping("/updateCustom/{userId}")
+    public R<Object> customImage(@PathVariable Integer userId,@RequestBody ImageDto imageDto){
+        log.info("imageDto:{}",imageDto);
+        if(!TypeUtil.CheckConfig(imageDto.getRecommendedDataDisk()))return R.fail("配置错误，请重新配置");
+        if(!TypeUtil.CheckResourceConfig(imageDto.getRecommendedCpu(),imageDto.getRecommendedMemory()))return R.fail("cpu和内存配置错误，请重新配置");
+        if(imageService.ImageExist(imageDto))return  R.fail("镜像已存在");
+        if(imageDto.getLabelName()==null)return R.fail("至少需要一个标签");
+        imageService.customImage(userId,imageDto);
+        return R.success("自定义镜像成功");
     }
 }

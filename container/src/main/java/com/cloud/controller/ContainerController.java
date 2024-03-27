@@ -147,7 +147,9 @@ public class ContainerController {
     @PostMapping("/upload")
     public  R<Object> upload(@RequestBody UserImageDto userImageDto) throws ApiException {
         //todo 选择标签，标签为0进行报错
+        log.info("上传的镜像信息:{}",userImageDto);
         if(userImageDto.getLabelName()==null)return R.fail("必须选择一个标签");
+        if(userImageDto.getImageRemark()==null)return R.fail("镜像备注不能为空");
         k8sService.upload(userImageDto);
         containerService.upload(userImageDto);
         return R.success("上传成功");
@@ -211,6 +213,16 @@ public class ContainerController {
     @GetMapping("/label")
     public R<Object> label(){
         List<String> list=containerService.getLabel();
+        return R.success(list);
+    }
+
+    /**
+     * 获取系统信息
+     * @return
+     */
+    @GetMapping("/system")
+    public R<Object>  system(){
+        List<String> list=containerService.getSystem();
         return R.success(list);
     }
 

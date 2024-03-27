@@ -72,6 +72,7 @@ public class K8sServiceImpl implements K8sService {
     public void deleteDeskTop(ContainerDto containerDto) throws ApiException {
         //删除指定的pod控制器
         String soleName=containerDto.getPodControllerName()+"-"+containerDto.getUserId();
+        log.info("删除桌面，删除的pod控制器名称是{}",soleName);
         appsV1Api.deleteNamespacedDeployment(soleName,ConfigEntity.Image_NameSpace,null,null,null,null,null,null);
         try {
             coreV1Api.deleteNamespacedService(soleName+ConfigEntity.Service,ConfigEntity.Image_NameSpace,null,null,null,null,null,null);
@@ -141,6 +142,7 @@ public class K8sServiceImpl implements K8sService {
                 .map(entry -> entry.getKey() + "=" + entry.getValue())
                 .reduce((first, second) -> first + "," + second)
                 .orElse("");//获取标签选择器
+        log.info("labelSelector:{}",labelSelector);
         V1PodList podList = coreV1Api.listNamespacedPod(ConfigEntity.Image_NameSpace, null, null, null, null, labelSelector, null, null, null, null, null);
         String containerID = null;
         for (V1Pod item : podList.getItems()) {
@@ -148,6 +150,7 @@ public class K8sServiceImpl implements K8sService {
             // 遍历每个容器
             containerID = item.getStatus().getContainerStatuses().get(0).getContainerID();//获取容器id
         }
+        log.info("containerID:{}",containerID);
         int i = 0;//“/”的个数
         for (char c : containerID.toCharArray()) {
             if (c == '/'){

@@ -15,9 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import static com.cloud.entity.ConfigEntity.Custom_Image_Source;
+import static com.cloud.entity.ConfigEntity.Office_Image_Source;
+
 
 @Service
 @Slf4j
@@ -143,7 +148,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         logMapper.insertLog(userId,ConfigEntity.Create_Image_Log_Type,dateTime,ConfigEntity.Create_Image_Log_Content+imageDto.getImageRemark());
         String imageName=imageMapper.selectImageName(imageDto.getImageSystem());
         String imageId= String.valueOf(UUID.randomUUID());
-        imageMapper.insert(TypeUtil.CreateImage(imageDto,userId,imageName,imageId));
+        imageMapper.insert(TypeUtil.CreateImage(imageDto,userId,imageName,imageId,Office_Image_Source));
         //查看推荐配置中是否存在该配置-->存在则返回id,不存在则先创建再连接
         Integer recommendId = recommendedMapper.getRecommendedId(imageDto);
         //创建推荐,推荐配置不存在
@@ -176,7 +181,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         queryWrapper.eq(Image_Label::getImageId,imageDto.getImageId()).eq(Image_Label::getRecommendedId,imageDto.getRecommendedId());
         imageLabelMapper.delete(queryWrapper);//这里的recommendedId是旧配置的id
         //进行镜像名称更新
-        imageMapper.updateById(TypeUtil.CreateImage(imageDto,imageDto.getUserId(),imageDto.getImageName(),imageDto.getImageId()));
+        imageMapper.updateById(TypeUtil.CreateImage(imageDto,imageDto.getUserId(),imageDto.getImageName(),imageDto.getImageId(),Office_Image_Source));
         Integer recommendId = recommendedMapper.getRecommendedId(imageDto);
         //创建推荐,推荐配置不存在
         if(recommendId==null) {
@@ -247,6 +252,28 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     @Override
     public Integer getEndPort() {
         return  imageMapper.getEndPort();
+    }
+
+    @Override
+    public void customImage(Integer userId, ImageDto imageDto) {
+        String imageName=imageMapper.selectImageName(imageDto.getImageSystem());
+        String imageId= String.valueOf(UUID.randomUUID());
+        imageMapper.insert(TypeUtil.CreateImage(imageDto,userId,imageName,imageId,Custom_Image_Source));
+        //查看推荐配置中是否存在该配置-->存在则返回id,不存在则先创建再连接
+        Integer recommendId = recommendedMapper.getRecommendedId(imageDto);
+        //创建推荐,推荐配置不存在
+        if(recommendId==null) {
+            recommendedMapper.addRecommended(imageDto);
+            recommendId=recommendedMapper.getRecommendedId(imageDto);
+        }
+        //建立连接
+        //todo 推荐配置的id
+        //解析标签，建立连接
+        List<String> tags=imageDto.getLabelName();
+        for(String tag:tags){
+            Integer labelId=labelMapper.getLabelId(tag);
+            imageLabelMapper.insert(new Image_Label(imageId,labelId,recommendId));
+        }
     }
 
 

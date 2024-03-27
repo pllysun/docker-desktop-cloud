@@ -74,7 +74,7 @@ public class ControlController {
     }
 
     /**
-     * 管理员搜索所有使用中+关机中
+     * 管理员搜索所有使用中+关机
      * @return
      */
     @GetMapping("/adminDeskTopUser")

@@ -52,12 +52,12 @@ public class TypeUtil {
      * @param imageId
      * @return
      */
-    public static Image CreateImage(ImageDto imageDto, Integer userId,String imageName,String imageId) {
+    public static Image CreateImage(ImageDto imageDto, Integer userId,String imageName,String imageId,Integer source) {
         Image image=new Image();
         image.setImageId(imageId);
         image.setImageName(imageName);
         image.setImageSystem(imageDto.getImageSystem());
-        image.setSource(ConfigEntity.Image_Source);
+        image.setSource(source);
         image.setImageRemark(imageDto.getImageRemark());
         image.setImageIntroduce(imageDto.getImageIntroduce());
         image.setUserId(userId);

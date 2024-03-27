@@ -115,7 +115,7 @@
             image_table.image_id = image_label.image_id
             and recommended_table.recommended_id = image_label.recommended_id
             and image_table.user_id = #{userId}
-            and image_table.source= 1
+            and image_table.source in (1,2)
             <if test="imageName != null and imageName !='' ">
                 and image_table.image_remark like concat('%',#{imageName},'%')
             </if>

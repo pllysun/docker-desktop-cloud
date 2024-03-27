@@ -1,6 +1,5 @@
 package com.cloud.service.impl;
 
-import com.alibaba.druid.proxy.jdbc.JdbcParameter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloud.DTO.ContainerDto;
@@ -14,12 +13,10 @@ import com.cloud.utils.TypeUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -147,6 +144,7 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
         //连接配置和标签
         for(String label:userImageDto.getLabelName()){
             Integer labelId=labelMapper.getLabelId(label);
+            log.info("labelId:{}",labelId);
             imageLabelMapper.insert(new Image_Label(image.getImageId(), recommended.getRecommendedId(),labelId));
         }
     }
@@ -164,5 +162,10 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
     @Override
     public List<String> getLabel() {
         return labelMapper.selectNameList();
+    }
+
+    @Override
+    public List<String> getSystem() {
+        return imageMapper.getSystem();
     }
 }
