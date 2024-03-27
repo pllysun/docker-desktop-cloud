@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 桌面容器管理
@@ -147,6 +148,7 @@ public class ContainerController {
     @PostMapping("/upload")
     public  R<Object> upload(@RequestBody UserImageDto userImageDto) throws ApiException {
         //todo 选择标签，标签为0进行报错
+        userImageDto.getContainerDto().setPodControllerName(TypeUtil.generateLetterOnlyUUID());
         log.info("上传的镜像信息:{}",userImageDto);
         if(userImageDto.getLabelName()==null)return R.fail("必须选择一个标签");
         if(userImageDto.getImageRemark()==null)return R.fail("镜像备注不能为空");
@@ -225,5 +227,4 @@ public class ContainerController {
         List<String> list=containerService.getSystem();
         return R.success(list);
     }
-
 }
