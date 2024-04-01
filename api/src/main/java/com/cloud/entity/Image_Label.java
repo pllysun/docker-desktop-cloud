@@ -26,4 +26,16 @@ public class Image_Label {
      */
     private Integer recommendedId;
 
+    /**
+     *  镜像备注
+     */
+    private String imageRemark;
+
+    /**
+     * 镜像介绍
+     */
+    private String  imageIntroduce;
+
+
+
 }

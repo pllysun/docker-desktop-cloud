@@ -58,18 +58,20 @@ public class NetworkController {
      * @param network
      * @return
      */
-    @PostMapping("/addNetwork")
-    public R<Object> add(@RequestBody Network network,HttpServletRequest request) throws ApiException, UnknownHostException {
+    @PostMapping("/addNetwork/{userId}")
+    public R<Object> add(@PathVariable Integer userId,@RequestBody Network network,HttpServletRequest request) throws ApiException, UnknownHostException {
         //todo 限制网络名称，防止重复网络
         if(networkService.networkExist(network))
-            return R.fail("网络名已存在");
+            return R.fail("桌面标签已存在");
         log.info("request:{}",request.getHeader("X-Real-IP"));
         //todo 获取用户ip
         String userIP= TypeUtil.IpToNetWork(network.getUserIp());
         network.setUserIp(userIP);
         network.setPodCount(0);
+        network.setUserId(userId);
         //生成唯一id
         network.setNetworkId(UUID.randomUUID().toString());
+        //保存网络
         networkService.save(network);
         networkService.log(network.getUserId(),ConfigEntity.Create_Network_Log_Type,ConfigEntity.Create_Network_Log_Content+network.getNetworkName());
         //todo k8s服务
@@ -86,7 +88,6 @@ public class NetworkController {
         networkService.updateById(network);
         networkService.log(network.getUserId(),ConfigEntity.Update_Network_Log_Type,ConfigEntity.Update_Network_Log_Content(oldName)+network.getNetworkName());
         //todo k8s服务
-        k8sService.updateNetwork(network,oldName);
         return R.success("编辑成功");
     }
 

@@ -6,16 +6,16 @@
 
 <!--    官方所有镜像-->
     <select id="getAllOfficial" resultType="com.cloud.DTO.ImageDto">
-        select  distinct image_table.image_id,image_name,image_system,image_introduce
+        select  distinct image_table.image_id,image_name,image_system,image_label.image_introduce
                        ,image_label.recommended_id,recommended_cpu,recommended_memory,
-                        recommended_data_disk,image_remark,image_table.user_id
+                        recommended_data_disk,image_label.image_remark,image_table.user_id
         from image_table,recommended_table,image_label
         <where>
             image_table.image_id = image_label.image_id
             and recommended_table.recommended_id = image_label.recommended_id
             and image_table.source=0
             <if test="imageName != null and imageName !='' ">
-                and image_table.image_remark like concat('%',#{imageName},'%')
+                and image_label.image_remark like concat('%',#{imageName},'%')
             </if>
             <if test="imageSystem != null">
                 and image_table.image_system= #{imageSystem}
@@ -47,7 +47,7 @@
 
 <!--    推荐镜像-->
     <select id="getRecommended" resultType="com.cloud.DTO.ImageDto">
-        select distinct image_table.image_id,image_remark,image_name,image_system,image_introduce
+        select distinct image_table.image_id,image_label.image_remark,image_name,image_system,image_label.image_introduce
                       ,image_label.recommended_id,recommended_cpu,recommended_memory
                       ,recommended_data_disk,image_table.user_id
         from image_table,recommended_table,image_label where
@@ -58,16 +58,16 @@
     </select>
 <!--    用户镜像-->
     <select id="getAllUser" resultType="com.cloud.DTO.ImageDto">
-        select  distinct image_table.image_id,image_name,image_system,image_introduce
+        select  distinct image_table.image_id,image_name,image_system,image_label.image_introduce
         ,image_label.recommended_id,recommended_cpu,recommended_memory
-                       ,recommended_data_disk,image_remark,image_table.user_id
+                       ,recommended_data_disk,image_label.image_remark,image_table.user_id
         from image_table,recommended_table,image_label
         <where>
             image_table.image_id = image_label.image_id
             and recommended_table.recommended_id = image_label.recommended_id
             and image_table.source=1
             <if test="imageName != null and imageName !='' ">
-                and image_table.image_remark like concat('%',#{imageName},'%')
+                and image_label.image_remark like concat('%',#{imageName},'%')
             </if>
             <if test="imageSystem != null">
                 and image_table.image_system= #{imageSystem}
@@ -107,9 +107,9 @@
 
 <!--    查询个人镜像-->
     <select id="getIndividualImage" resultType="com.cloud.DTO.ImageDto">
-        select  distinct image_table.image_id,image_name,image_system,image_introduce
+        select  distinct image_table.image_id,image_name,image_system,image_label.image_introduce
         ,image_label.recommended_id,recommended_cpu,recommended_memory
-                       ,recommended_data_disk,image_remark,image_table.user_id
+                       ,recommended_data_disk,image_label.image_remark,image_table.user_id
         from image_table,recommended_table,image_label
         <where>
             image_table.image_id = image_label.image_id
@@ -117,7 +117,7 @@
             and image_table.user_id = #{userId}
             and image_table.source in (1,2)
             <if test="imageName != null and imageName !='' ">
-                and image_table.image_remark like concat('%',#{imageName},'%')
+                and image_label.image_remark like concat('%',#{imageName},'%')
             </if>
             <if test="imageSystem != null">
                 and image_table.image_system= #{imageSystem}
@@ -147,9 +147,9 @@
     </select>
 <!--        修改使用次数-->
     <update id="addUse">
-        update image_table
-        set image_table.image_use_count=image_table.image_use_count+1
-        where image_id=#{imageId}
+        update image_label
+        set image_label.use_count=image_label.use_count+1
+        where image_id=#{imageId} and recommended_id=#{recommendedId}
     </update>
 <!--查询每日使用数量-->
     <select id="selectListCount" resultType="com.cloud.DTO.DateImageUseCount">
@@ -158,6 +158,6 @@
     </select>
 <!--根据时间排序获取到最后一个-->
     <select id="getEndPort" resultType="Integer">
-        select pod_port from pod_controller_table order by create_time limit 1
+        select pod_port from pod_controller_table order by create_time desc limit 1
     </select>
 </mapper>

@@ -84,7 +84,7 @@ public class ConfigEntity {
 
     public static final Integer Date_Image_Use_Count=7;
 
-    public static final String MountPath="/home";
+    public static final String MountPath="/root";
 
     public static final Integer Use_Time=7;
 
@@ -157,6 +157,6 @@ public class ConfigEntity {
         return "修改"+NetworkName+"网络名称为";
     }
 
-    public static final  Integer User_Source=0;
+    public static final  Integer User_Source=1;
 }
 

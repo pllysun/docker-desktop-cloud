@@ -43,7 +43,7 @@ public interface ImageService extends IService<Image> {
 
     void userAddDeskTop(Integer userId);
 
-    void imageAddUse(String imageId);
+    void imageAddUse(String imageId,Integer recommendedId);
 
     Integer getEndPort();
 

@@ -148,7 +148,8 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         logMapper.insertLog(userId,ConfigEntity.Create_Image_Log_Type,dateTime,ConfigEntity.Create_Image_Log_Content+imageDto.getImageRemark());
         String imageName=imageMapper.selectImageName(imageDto.getImageSystem());
         String imageId= String.valueOf(UUID.randomUUID());
-        imageMapper.insert(TypeUtil.CreateImage(imageDto,userId,imageName,imageId,Office_Image_Source));
+        Image image=TypeUtil.CreateImage(imageDto,userId,imageName,imageId,Office_Image_Source);
+        imageMapper.insert(image);
         //查看推荐配置中是否存在该配置-->存在则返回id,不存在则先创建再连接
         Integer recommendId = recommendedMapper.getRecommendedId(imageDto);
         //创建推荐,推荐配置不存在
@@ -162,7 +163,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         List<String> tags=imageDto.getLabelName();
         for(String tag:tags){
             Integer labelId=labelMapper.getLabelId(tag);
-            imageLabelMapper.insert(new Image_Label(imageId,labelId,recommendId));
+            imageLabelMapper.insert(new Image_Label(imageId,labelId,recommendId,image.getImageRemark(),image.getImageIntroduce()));
         }
     }
 
@@ -194,7 +195,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         List<String> tags=imageDto.getLabelName();
         for(String tag:tags){
             Integer labelId=labelMapper.getLabelId(tag);
-            imageLabelMapper.insert(new Image_Label(imageDto.getImageId(), labelId,recommendId));
+            imageLabelMapper.insert(new Image_Label(imageDto.getImageId(), labelId,recommendId,imageDto.getImageRemark(),imageDto.getImageIntroduce()));
         }
     }
 
@@ -245,8 +246,8 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     }
 
     @Override
-    public void imageAddUse(String imageId) {
-        imageMapper.addUse(imageId);
+    public void imageAddUse(String imageId,Integer recommendedId) {
+        imageMapper.addUse(imageId,recommendedId);
     }
 
     @Override
@@ -272,7 +273,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         List<String> tags=imageDto.getLabelName();
         for(String tag:tags){
             Integer labelId=labelMapper.getLabelId(tag);
-            imageLabelMapper.insert(new Image_Label(imageId,labelId,recommendId));
+            imageLabelMapper.insert(new Image_Label(imageId,labelId,recommendId,imageDto.getImageRemark(),imageDto.getImageIntroduce()));
         }
     }
 

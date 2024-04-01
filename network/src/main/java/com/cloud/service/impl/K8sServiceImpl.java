@@ -26,7 +26,7 @@ public class K8sServiceImpl implements K8sService {
     @Override
     public void addNetwork(Network network) throws ApiException {
         //设置唯一网络策略名
-        String soleName =network.getNetworkName()+network.getUserId()+ConfigEntity.Network_Name;
+        String soleName =network.getPodSelector()+network.getUserId()+ConfigEntity.Network_Name;
         log.info("addNetwork: {}",soleName);
         // 创建NetworkPolicy规范
         V1NetworkPolicySpec spec = new V1NetworkPolicySpec().podSelector(new V1LabelSelector()
@@ -53,7 +53,7 @@ public class K8sServiceImpl implements K8sService {
     @Override
     public void deleteNetwork(Network network) throws ApiException {
         // 调用API删除NetworkPolicy
-        String soleName =network.getNetworkName()+network.getUserId()+ConfigEntity.Network_Name;
+        String soleName =network.getPodSelector()+network.getUserId()+ConfigEntity.Network_Name;
         log.info("删除网络策略：{}",soleName);
         // 删除网络策略
         networkingV1Api.deleteNamespacedNetworkPolicy(soleName, ConfigEntity.Image_NameSpace, null, null, null, null, null, null);

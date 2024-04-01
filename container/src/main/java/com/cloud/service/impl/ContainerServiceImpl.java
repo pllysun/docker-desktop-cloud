@@ -145,7 +145,7 @@ public class ContainerServiceImpl extends ServiceImpl<ContainerMapper, PodContro
         for(String label:userImageDto.getLabelName()){
             Integer labelId=labelMapper.getLabelId(label);
             log.info("labelId:{}",labelId);
-            imageLabelMapper.insert(new Image_Label(image.getImageId(), recommended.getRecommendedId(),labelId));
+            imageLabelMapper.insert(new Image_Label(image.getImageId(), recommended.getRecommendedId(),labelId,image.getImageRemark(),image.getImageIntroduce()));
         }
     }
 

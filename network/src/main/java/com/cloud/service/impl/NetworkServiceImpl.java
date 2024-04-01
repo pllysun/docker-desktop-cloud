@@ -28,7 +28,7 @@ public class NetworkServiceImpl extends ServiceImpl<NetworkMapper, Network> impl
 
     @Override
     public boolean networkExist(Network network) {
-        Integer count=networkMapper.Exist(network.getNetworkName(),network.getUserId());
+        Integer count=networkMapper.Exist(network.getPodSelector(),network.getUserId());
         return count!=0;//如果不等于0说明存在
     }
 

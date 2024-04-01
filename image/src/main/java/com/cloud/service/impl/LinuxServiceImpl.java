@@ -77,7 +77,7 @@ public class LinuxServiceImpl implements LinuxService {
     //重启nfs服务
     public void restartNfs(Session session) throws JSchException {
         Channel channel = session.openChannel("exec");
-        String deleteFolderCommand ="systemctl restart nfs";
+        String deleteFolderCommand ="systemctl restart nfs-server";
         ((ChannelExec) channel).setCommand(deleteFolderCommand);
         // 获取命令执行结果
         channel.setInputStream(null);

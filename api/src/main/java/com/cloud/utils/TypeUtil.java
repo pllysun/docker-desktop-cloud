@@ -23,7 +23,7 @@ public class TypeUtil {
         podController.setImageId(String.valueOf(deskTopDto.getImageDto().getImageId()));
         podController.setContainerName(deskTopDto.getContainerName());
         podController.setUserId(userId);
-        podController.setNetworkId(deskTopDto.getNetworkId());//todo 这里的网络还没改
+        podController.setNetworkId(deskTopDto.getNetworkId());
         podController.setIpAddress(ip);
         podController.setPodControllerName(deskTopDto.getPodControllerName());
         podController.setContainerState(ConfigEntity.Open_Container_Status);

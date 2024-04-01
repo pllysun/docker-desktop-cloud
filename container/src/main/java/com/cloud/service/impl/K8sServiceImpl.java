@@ -99,7 +99,7 @@ public class K8sServiceImpl implements K8sService {
     public void expansion(ContainerDto containerDto) throws ApiException, InterruptedException {
         String soleName=containerDto.getPodControllerName()+"-"+containerDto.getUserId();
         deleteNfs(containerDto);
-        Thread.sleep(80);
+        Thread.sleep(120);
         //创建pv
         V1PersistentVolume volume = new V1PersistentVolume();
         V1ObjectMeta metadata = new V1ObjectMeta();

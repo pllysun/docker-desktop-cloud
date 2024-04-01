@@ -14,7 +14,7 @@
         </if>
 
         <if test="logTypeName!=null and  logTypeName!=''">
-            and log_type_table.log_type_name =#{logTypeName}
+            and log_type_table.log_type_name like concat('%',#{logTypeName},'%')
         </if>
         order by log_time
         </where>

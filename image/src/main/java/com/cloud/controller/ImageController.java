@@ -118,7 +118,7 @@ public class ImageController {
      * @return
      */
     @GetMapping("/user")
-    public R<Object> listUser(@RequestParam(defaultValue = "") List<String> labelName,@RequestParam(defaultValue = "1")Integer pageNum,@RequestParam(defaultValue = "10") Integer pageSize,
+    public R<Object> listUser(@RequestParam(defaultValue = "") List<String> labelName,@RequestParam(defaultValue = "1")Integer pageNum,@RequestParam(defaultValue = "1000") Integer pageSize,
                                   String imageRemark, String imageSystem, Integer recommendedCpu, Integer recommendedMemory,
                                   Integer recommendedSystemDisk, Integer recommendedDataDisk) {
         if(labelName.size()==0)labelName=null;
@@ -169,16 +169,20 @@ public class ImageController {
         Integer endPort=imageService.getEndPort();
         if(endPort!=null)podPort=endPort+1;//当没有一个容器的时候使用2000，如果有容器获得到最后一位
         deskTopDto.setPodPort(podPort);
-        String ip=k8sService.createDeskTop(userId,deskTopDto,network,podPort);
+        String ip="";
+        //创建容器
+        if("ubuntu".equals(deskTopDto.getImageDto().getImageSystem()))
+            ip=k8sService.createUbuntuDeskTop(userId,deskTopDto,network,podPort);
+        else
+            ip=k8sService.createKylinDeskTop(userId,deskTopDto,network,podPort);
         //桌面容器添加到数据库中
         imageService.setDeskTop(userId,ip,deskTopDto);
-
         //该网络添加一个云桌面
         imageService.networkAddDeskTop(deskTopDto.getNetworkId());
         //用户添加一个云桌面
         imageService.userAddDeskTop(userId);
         //镜像增加一个使用数
-        imageService.imageAddUse(deskTopDto.getImageDto().getImageId());
+        imageService.imageAddUse(deskTopDto.getImageDto().getImageId(),deskTopDto.getImageDto().getRecommendedId());
         return R.success("创建成功"+"ip:"+ip);
     }
 

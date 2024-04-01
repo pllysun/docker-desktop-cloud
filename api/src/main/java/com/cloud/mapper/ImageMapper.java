@@ -24,7 +24,7 @@ public interface ImageMapper extends BaseMapper<Image> {
 
     List<ImageDto> getIndividualImage(@Param("userId") Integer userId,@Param("imageName") String imageRemark,@Param("imageSystem") String imageSystem,@Param("recommendedCpu") Integer recommendedCpu,@Param("recommendedMemory") Integer recommendedMemory,@Param("recommendedSystemDisk") Integer recommendedSystemDisk,@Param("recommendedDataDisk") Integer recommendedDataDisk,@Param("labelName")List<String> labelName,@Param("count") Integer count);
 
-    void addUse(String imageId);
+    void addUse(@Param("imageId") String imageId,@Param("recommendedId") Integer recommendedId);
 
     List<DateImageUseCount> selectListCount();
 
