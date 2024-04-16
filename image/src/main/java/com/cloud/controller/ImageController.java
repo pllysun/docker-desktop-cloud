@@ -100,8 +100,8 @@ public class ImageController {
         //todo 全部官方镜像
         List<ImageDto> imageDtoList = imageService.getAllOfficial(pageNum,pageSize,imageRemark,imageSystem,recommendedCpu,recommendedMemory,recommendedSystemDisk,recommendedDataDisk,labelName);
         //todo 合并镜像
-        imageDtoList.addAll(imageRecommended);
-        return R.success(imageDtoList);
+        imageRecommended.addAll(imageDtoList);
+        return R.success(imageRecommended);
     }
 
     /**
@@ -174,7 +174,8 @@ public class ImageController {
         if("ubuntu".equals(deskTopDto.getImageDto().getImageSystem()))
             ip=k8sService.createUbuntuDeskTop(userId,deskTopDto,network,podPort);
         else
-            ip=k8sService.createKylinDeskTop(userId,deskTopDto,network,podPort);
+            //ip=k8sService.createKylinDeskTop(userId,deskTopDto,network,podPort);
+            ip="http://118.195.216.42:6080/vnc.html";
         //桌面容器添加到数据库中
         imageService.setDeskTop(userId,ip,deskTopDto);
         //该网络添加一个云桌面

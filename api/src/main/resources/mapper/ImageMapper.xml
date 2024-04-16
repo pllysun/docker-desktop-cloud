@@ -8,7 +8,7 @@
     <select id="getAllOfficial" resultType="com.cloud.DTO.ImageDto">
         select  distinct image_table.image_id,image_name,image_system,image_label.image_introduce
                        ,image_label.recommended_id,recommended_cpu,recommended_memory,
-                        recommended_data_disk,image_label.image_remark,image_table.user_id
+                        recommended_data_disk,image_label.image_remark,image_table.user_id,image_label.image_photo
         from image_table,recommended_table,image_label
         <where>
             image_table.image_id = image_label.image_id
@@ -49,7 +49,7 @@
     <select id="getRecommended" resultType="com.cloud.DTO.ImageDto">
         select distinct image_table.image_id,image_label.image_remark,image_name,image_system,image_label.image_introduce
                       ,image_label.recommended_id,recommended_cpu,recommended_memory
-                      ,recommended_data_disk,image_table.user_id
+                      ,recommended_data_disk,image_table.user_id,image_label.image_photo
         from image_table,recommended_table,image_label where
             image_table.image_id = image_label.image_id
             and image_label.recommended_id = recommended_table.recommended_id
@@ -60,7 +60,7 @@
     <select id="getAllUser" resultType="com.cloud.DTO.ImageDto">
         select  distinct image_table.image_id,image_name,image_system,image_label.image_introduce
         ,image_label.recommended_id,recommended_cpu,recommended_memory
-                       ,recommended_data_disk,image_label.image_remark,image_table.user_id
+                       ,recommended_data_disk,image_label.image_remark,image_table.user_id,image_label.image_photo
         from image_table,recommended_table,image_label
         <where>
             image_table.image_id = image_label.image_id
@@ -109,7 +109,7 @@
     <select id="getIndividualImage" resultType="com.cloud.DTO.ImageDto">
         select  distinct image_table.image_id,image_name,image_system,image_label.image_introduce
         ,image_label.recommended_id,recommended_cpu,recommended_memory
-                       ,recommended_data_disk,image_label.image_remark,image_table.user_id
+         ,recommended_data_disk,image_label.image_remark,image_table.user_id
         from image_table,recommended_table,image_label
         <where>
             image_table.image_id = image_label.image_id

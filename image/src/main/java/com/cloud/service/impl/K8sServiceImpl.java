@@ -82,7 +82,7 @@ public class K8sServiceImpl implements K8sService {
         spec1.setSelector(new V1LabelSelector().matchLabels(Map.of(ConfigEntity.Pod_Selector_Key,network.getPodSelector())).matchLabels(Map.of(ConfigEntity.MatchLabels_Key,soleName)));
         spec1.setTemplate(new V1PodTemplateSpec().metadata(new V1ObjectMeta().labels(Map.of(ConfigEntity.Pod_Selector_Key,network.getPodSelector())).labels(Map.of(ConfigEntity.MatchLabels_Key,soleName)))
                 .spec(new V1PodSpec().containers(Arrays.asList(new V1Container().name(soleName).image(deskTopDto.getImageDto().getImageName()).imagePullPolicy(ConfigEntity.Image_Pull_Policy)
-                .volumeMounts(Arrays.asList(new V1VolumeMount().name(ConfigEntity.VolumeName).mountPath(ConfigEntity.MountPath)))
+                .volumeMounts(Arrays.asList(new V1VolumeMount().name(ConfigEntity.VolumeName).mountPath("/home")))
                                 .env(Arrays.asList(new V1EnvVar().name("VNC_PW").value(deskTopDto.getPassword())))//这里的卷暂时写成常量，volumeName暂时写成常量
                 .resources(new V1ResourceRequirements()
                 //.limits(Map.of(ConfigEntity.CPU, new Quantity(deskTopDto.getImageDto().getRecommendedCpu().toString()), ConfigEntity.Memory, new Quantity(deskTopDto.getImageDto().getRecommendedMemory()+ConfigEntity.Memory_Unit)))
@@ -105,10 +105,11 @@ public class K8sServiceImpl implements K8sService {
         V1ServiceSpec spec = new V1ServiceSpec();
         spec.setType(ConfigEntity.Service_Type);
         V1ServicePort port = new V1ServicePort();//-->端口信息
-        port.setName(ConfigEntity.Port_Name);//端口名
+        port.setName(ConfigEntity.Port_Name);
         port.setPort(deskTopDto.getPodPort());//service端口（这个要随机）
         port.setProtocol(ConfigEntity.Port_Protocol);//端口使用协议
         port.setTargetPort(new IntOrString(ConfigEntity.Port_TargetPort));//pod端口
+
         spec.setPorts(Collections.singletonList(port));//主机端口
         spec.setSelector(Collections.singletonMap(ConfigEntity.MatchLabels_Key,soleName));//标签选择器，用于确定当前service代理哪些pod
         service.setSpec(spec);
@@ -165,8 +166,8 @@ public class K8sServiceImpl implements K8sService {
         spec1.setSelector(new V1LabelSelector().matchLabels(Map.of(ConfigEntity.Pod_Selector_Key,network.getPodSelector())).matchLabels(Map.of(ConfigEntity.MatchLabels_Key,soleName)));
         spec1.setTemplate(new V1PodTemplateSpec().metadata(new V1ObjectMeta().labels(Map.of(ConfigEntity.Pod_Selector_Key,network.getPodSelector())).labels(Map.of(ConfigEntity.MatchLabels_Key,soleName)))
                 .spec(new V1PodSpec().containers(Arrays.asList(new V1Container().name(soleName).image(deskTopDto.getImageDto().getImageName()).imagePullPolicy(ConfigEntity.Image_Pull_Policy)
-                                .volumeMounts(Arrays.asList(new V1VolumeMount().name(ConfigEntity.VolumeName).mountPath(ConfigEntity.MountPath)))
-                                .env(Arrays.asList(new V1EnvVar().name("VNC_VIEW_ONLY_PASSWORD").value(deskTopDto.getPassword()))).command(List.of("/bin/sh", "-c")).args(List.of("/root/start_all.sh"))//这里的卷暂时写成常量，volumeName暂时写成常量
+                                .volumeMounts(Arrays.asList(new V1VolumeMount().name(ConfigEntity.VolumeName).mountPath("/data/usershare")))
+                                .env(Arrays.asList(new V1EnvVar().name("VNC_VIEW_ONLY_PASSWORD").value(deskTopDto.getPassword()))).command(List.of("/usr/bin/bash")).args(List.of("/root/start_all.sh"))//这里的卷暂时写成常量，volumeName暂时写成常量
                                 .resources(new V1ResourceRequirements()
                                         //.limits(Map.of(ConfigEntity.CPU, new Quantity(deskTopDto.getImageDto().getRecommendedCpu().toString()), ConfigEntity.Memory, new Quantity(deskTopDto.getImageDto().getRecommendedMemory()+ConfigEntity.Memory_Unit)))
                                 )))
@@ -188,10 +189,10 @@ public class K8sServiceImpl implements K8sService {
         V1ServiceSpec spec = new V1ServiceSpec();
         spec.setType(ConfigEntity.Service_Type);
         V1ServicePort port = new V1ServicePort();//-->端口信息
-        port.setName(ConfigEntity.Port_Name);//端口名
+        port.setName(ConfigEntity.Port_Name);
         port.setPort(deskTopDto.getPodPort());//service端口（这个要随机）
         port.setProtocol(ConfigEntity.Port_Protocol);//端口使用协议
-        port.setTargetPort(new IntOrString(ConfigEntity.Port_TargetPort));//pod端口
+        port.setTargetPort(new IntOrString(6080));//pod端口
         spec.setPorts(Collections.singletonList(port));//主机端口
         spec.setSelector(Collections.singletonMap(ConfigEntity.MatchLabels_Key,soleName));//标签选择器，用于确定当前service代理哪些pod
         service.setSpec(spec);

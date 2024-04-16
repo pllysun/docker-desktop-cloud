@@ -25,6 +25,7 @@ public class JwtUtil {
      * 7 * 24 * 60 * 60 * 1000L 七天
      */
     public static final Long JWT_TTL = 7 * 24 * 60 * 60 * 1000L;
+
     /**
      * 设置秘钥明文
      */
@@ -133,4 +134,5 @@ public class JwtUtil {
         String jwtToken = request.getHeader("Authorization");
         return JwtUtil.parseJWT(jwtToken).getSubject();
     }
+
 }

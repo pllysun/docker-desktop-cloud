@@ -76,8 +76,12 @@ public class ContainerController {
      * @throws ApiException
      */
     @PutMapping("/open/{userId}")
-    public R<Object> start(@PathVariable Integer userId,@RequestBody ContainerDto containerDto) throws ApiException {
-        k8sService.openDeskTop(containerDto);
+    public R<Object> start(@PathVariable Integer userId,@RequestBody ContainerDto containerDto)  {
+//        try {
+//            k8sService.openDeskTop(containerDto);
+//        }catch (ApiException e) {
+//            return R.success("开机成功");
+//        }
         containerService.openContainerState(userId,containerDto);
         return R.success("开机成功");
     }
@@ -93,7 +97,11 @@ public class ContainerController {
     @PutMapping("/close/{userId}")
     public R<Object> close(@PathVariable Integer userId,@RequestBody ContainerDto containerDto) throws ApiException {
         log.info("userId:{},桌面容器:{}",userId,containerDto);
-        k8sService.closeDeskTop(containerDto);
+//        try{
+//            k8sService.closeDeskTop(containerDto);
+//        }catch (ApiException e){
+//            return R.success("关机成功");
+//        }
         containerService.closeContainerState(userId,containerDto);
         return R.success("关机成功");
     }
@@ -120,8 +128,8 @@ public class ContainerController {
      */
     @PutMapping("/reinstall/{userId}")
     public R<Object> reinstall(@PathVariable Integer userId,@RequestBody ContainerDto containerDto) throws JSchException {
-        containerService.reinstall(userId,containerDto);
-        linuxService.emptyNfsFile(containerDto,session);
+//        containerService.reinstall(userId,containerDto);
+//        linuxService.emptyNfsFile(containerDto,session);
         return R.success("重装成功");
     }
 
@@ -135,7 +143,7 @@ public class ContainerController {
         if(!TypeUtil.CheckConfig(containerDto.getPodControllerDataDisk()))return R.fail("扩容失败");
         //先关机
         close(userId,containerDto);
-        k8sService.expansion(containerDto);
+        //k8sService.expansion(containerDto);
         containerService.updateDataDisk(userId,containerDto.getPodControllerId(),containerDto.getPodControllerDataDisk());
         return R.success("扩容成功");
     }
@@ -152,7 +160,7 @@ public class ContainerController {
         log.info("上传的镜像信息:{}",userImageDto);
         if(userImageDto.getLabelName()==null)return R.fail("必须选择一个标签");
         if(userImageDto.getImageRemark()==null)return R.fail("镜像备注不能为空");
-        k8sService.upload(userImageDto);
+        //k8sService.upload(userImageDto);
         containerService.upload(userImageDto);
         return R.success("上传成功");
     }

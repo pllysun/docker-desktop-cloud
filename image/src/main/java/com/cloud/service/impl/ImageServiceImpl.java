@@ -125,6 +125,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         List<ImageDto> imageDtos=imageMapper.getRecommended(recommendedId);
         for(ImageDto imageDto:imageDtos){
             List<String> list=labelMapper.getlabel(imageDto.getImageId(),imageDto.getRecommendedId());
+            list.add("推荐");
             imageDto.setLabelName(list);
         }
         return  imageDtos;

@@ -29,6 +29,8 @@ public class ConfigEntity {
 
     public  static final Integer  Port_TargetPort=6901;
 
+    public static final Integer Port_Kylin=6080;
+
     public  static final String   Host_Ip="175.27.141.199";
 
     public  static final Integer  Close_Replicas=0;

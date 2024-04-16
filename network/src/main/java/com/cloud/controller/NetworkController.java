@@ -75,7 +75,7 @@ public class NetworkController {
         networkService.save(network);
         networkService.log(network.getUserId(),ConfigEntity.Create_Network_Log_Type,ConfigEntity.Create_Network_Log_Content+network.getNetworkName());
         //todo k8s服务
-        k8sService.addNetwork(network);
+        //k8sService.addNetwork(network);
         return R.success("添加成功");
     }
 
@@ -100,7 +100,7 @@ public class NetworkController {
         networkService.removeById(networkId);
         networkService.log(network.getUserId(),ConfigEntity.Delete_Network_Log_Type,ConfigEntity.Delete_Network_Log_Content+network.getNetworkName());
         //todo k8s服务
-        k8sService.deleteNetwork(network);
+        //k8sService.deleteNetwork(network);
         return R.success("删除成功");
     }
 

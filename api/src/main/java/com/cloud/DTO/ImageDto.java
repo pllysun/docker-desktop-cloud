@@ -67,4 +67,9 @@ public class ImageDto {
      */
     private String imageIntroduce;
 
+    /**
+     * 镜像图片
+     */
+    private Integer imagePhoto;
+
 }

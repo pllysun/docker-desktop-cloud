@@ -229,6 +229,4 @@ public class UserController {
         List<Personalise> list = personaliseService.list();
         return R.success(list);
     }
-
-
 }
